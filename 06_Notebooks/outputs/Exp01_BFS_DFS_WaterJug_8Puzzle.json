@@ -1,0 +1,8 @@
+[
+ "Environment ready  ✓  numpy 2.5.3 | matplotlib 3.11.2\n",
+ "Successors of (0,0): [('Fill 4L', (4, 0)), ('Fill 3L', (0, 3))]\n",
+ "\nBFS: path length = 6, nodes expanded = 13, max frontier = 3\n   Start     → (0, 0)\n   Fill 4L   → (4, 0)\n   Pour 4→3  → (1, 3)\n   Empty 3L  → (1, 0)\n   Pour 4→3  → (0, 1)\n   Fill 4L   → (4, 1)\n   Pour 4→3  → (2, 3)\n\nDFS: path length = 6, nodes expanded = 7, max frontier = 3\n   Start     → (0, 0)\n   Fill 3L   → (0, 3)\n   Pour 3→4  → (3, 0)\n   Fill 3L   → (3, 3)\n   Pour 3→4  → (4, 2)\n   Empty 4L  → (0, 2)\n   Pour 3→4  → (2, 0)\n",
+ "",
+ "Start state: (4, 1, 2, 7, 5, 0, 8, 6, 3)\nBFS  : moves = ['Down', 'Left', 'Left', 'Up', 'Up', 'Right', 'Right', 'Down', 'Down'] | expanded = 390 | max frontier = 231\nDFS  : path length 319, 326 expansions (DFS wanders deep — not optimal)\n",
+ "Strategy  Path length  Nodes expanded  Max frontier\n     BFS            6              13             3\n     DFS            6               7             3\n"
+]

@@ -1,0 +1,7 @@
+[
+ "Environment ready  ✓  numpy 2.5.3 | matplotlib 3.11.2\n",
+ "Steepest-ascent success rate on 8-queens: 15.4% (textbook ≈ 14%)   mean steps = 3.2\n",
+ "Solution: [6, 0, 2, 7, 5, 3, 1, 4] found after 1 random restarts;  attacking pairs = 0\n",
+ "",
+ "Greedy best-first: Arad → Sibiu → Fagaras → Bucharest = 450 km   (expanded 4)\nA*               : Arad → Sibiu → Rimnicu → Pitesti → Bucharest = 418 km   (expanded 6)\n"
+]

@@ -1,0 +1,8 @@
+[
+ "Environment ready  ✓  numpy 2.5.3 | matplotlib 3.11.2\n",
+ "KB: 14 facts, 5 rules\n",
+ "Round 1: +15 facts → father(dashrath, bharat), father(dashrath, ram), father(ram, kush), father(ram, luv), grandparent(dashrath, kush), grandparent(dashrath, luv), grandparent(kaushalya, kush), grandparent(kaushalya, luv), mother(kaushalya, ram), mother(sita, kush), mother(sita, luv), sibling(bharat, ram), sibling(kush, luv), sibling(luv, kush), sibling(ram, bharat)\nRound 2: +2 facts → uncle(bharat, kush), uncle(bharat, luv)\n\nGrandparents of luv: ['dashrath', 'kaushalya']\nUncle of luv       : ['bharat']\n",
+ "?- grandparent(dashrath, kush).  →  YES\n?- uncle(bharat, luv).  →  YES\n?- mother(sita, kush).  →  YES\n?- father(bharat, luv).  →  NO\n\nProof trace for uncle(bharat, luv):\n→ try rule uncle for uncle(bharat, luv)\n  ✓ fact parent(ram, luv)\n  → try rule sibling for sibling(bharat, ram)\n    ✓ fact parent(dashrath, bharat)\n    ✓ fact parent(dashrath, ram)\n    ✓ fact male(bharat)\n",
+ "P Q R KB α = R\nF F F  F     F\nF F T  F     T\nF T F  F     F\nF T T  F     T\nT F F  F     F\nT F T  F     T\nT T F  F     F\nT T T  T     T\n\nKB ⊨ R ? True\n",
+ ""
+]

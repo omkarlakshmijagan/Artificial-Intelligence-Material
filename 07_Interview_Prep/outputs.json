@@ -1,0 +1,12 @@
+[
+ "(1, 2, 3, 4, 5, 6, 7, 8, 0) → solvable\n(1, 2, 3, 4, 5, 6, 8, 7, 0) → NOT solvable\n(1, 8, 2, 0, 4, 3, 7, 6, 5) → solvable\n(8, 1, 2, 0, 4, 3, 7, 6, 5) → NOT solvable\nAll tests passed ✓\n",
+ "jugs (4,3), target 2: 4 steps\njugs (5,3), target 4: 6 steps\njugs (6,4), target 1: -1 steps\nAll tests passed ✓\n",
+ "Shortest path length: 6\nAll tests passed ✓   Complexity: O(R·C) time and space\n",
+ "N= 4:      2 solutions  (0.000s)\nN= 6:      4 solutions  (0.000s)\nN= 8:     92 solutions  (0.000s)\nN=10:    724 solutions  (0.010s)\nN=12:  14200 solutions  (0.235s)\nAll tests passed ✓\n",
+ "KB ⊨ Wet ?   (True, None)\nKB ⊨ Rain ?  (False, {'Rain': False, 'Sprinkler': True, 'Wet': True})\nAll tests passed ✓\n",
+ "{'?y': 'John', '?x': ('Mother', '?y')}\nNone\nAll tests passed ✓\n",
+ "'claim your free prize'      → spam   (log-scores: ham=-14.30, spam=-11.81)\n'report meeting tomorrow'    → ham   (log-scores: ham=-8.41, spam=-10.90)\nAll tests passed ✓\n",
+ "After 1 positive test: 9.016%\nAfter 2 positive tests: 90.750%\nAll tests passed ✓   Lesson: low base rates dominate a single test\n",
+ "H(Play) = 0.940   Gain(Outlook) = 0.247\nAll tests passed ✓\n",
+ "'what is the fee'              → ('fees', 0.62)\n'do you have hostel rooms'     → ('hostel', 0.9)\n'companies for placement'      → ('placement', 0.77)\n'tell me a joke'               → ('fallback', 0.26)\nAll tests passed ✓\n"
+]

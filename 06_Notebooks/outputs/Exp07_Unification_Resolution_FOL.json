@@ -1,0 +1,7 @@
+[
+ "Environment ready  ✓  numpy 2.5.3 | matplotlib 3.11.2\n",
+ "UNIFY(Knows(John, x)        , Knows(John, Jane)         ) = {x/Jane}\nUNIFY(Knows(John, x)        , Knows(y, Bill)            ) = {y/John, x/Bill}\nUNIFY(Knows(John, x)        , Knows(y, Mother(y))       ) = {y/John, x/Mother(John)}\nUNIFY(Knows(John, x)        , Knows(x, Elizabeth)       ) = FAIL\nUNIFY(P(x, f(y))            , P(a, f(g(z)))             ) = {x/a, y/g(z)}\nUNIFY(Q(x)                  , Q(f(x))                   ) = FAIL\n",
+ "KB: ∀x Man(x) ⇒ Mortal(x);  Man(Socrates)   Goal: Mortal(Socrates)\n   resolve [Mortal(x0) ∨ ¬Man(x0)] with [Man(Socrates)]  ⟹  Mortal(Socrates)\n   resolve [Mortal(x0) ∨ ¬Man(x0)] with [¬Mortal(Socrates)]  ⟹  ¬Man(Socrates)\n   resolve [¬Mortal(Socrates)] with [Mortal(Socrates)]  ⟹  □\nProved!\n",
+ "Goal: Criminal(West) → PROVED ✓ after generating 100 resolvents\nFinal step: [¬Sells(West, M1, Nono)] + [Sells(West, M1, Nono)] ⟹ □\n",
+ ""
+]

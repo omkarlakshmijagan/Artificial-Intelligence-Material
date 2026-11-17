@@ -1,0 +1,6 @@
+[
+ "Environment ready  ✓  numpy 2.5.3 | matplotlib 3.11.2\n",
+ "Minimax    : value 0, best first move 0, nodes = 549,946\nAlpha-Beta : value 0, best first move 0, nodes = 18,297\nPruning saved 96.7% of the nodes — same decision, value 0 means perfect play is a draw.\n",
+ "",
+ "Final board:\n X | X | O\n O | O | X\n X | O | X\nResult: Draw\n"
+]

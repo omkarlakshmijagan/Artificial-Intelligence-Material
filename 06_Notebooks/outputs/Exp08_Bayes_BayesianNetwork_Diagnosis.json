@@ -1,0 +1,8 @@
+[
+ "Environment ready  ✓  numpy 2.5.3 | matplotlib 3.11.2\n",
+ "P(+) = 0.0585\nP(Disease | +) = 0.1538  →  only 15.4% despite a 90%-sensitive test (base-rate effect)\nAfter a second independent positive test: 76.6%\n",
+ "",
+ "P(j, m, a, ¬b, ¬e) = 0.000628\nP(B=T | J=True, M=True) = 0.2842\nP(E=T | J=True, M=True) = 0.1761\nP(A=T | J=True, M=True) = 0.7607\nP(B=T | J=True, M=False) = 0.0051\n",
+ "Exact P(B | j, m) = 0.2842;  likelihood weighting (100k samples) ≈ 0.2975\n",
+ ""
+]

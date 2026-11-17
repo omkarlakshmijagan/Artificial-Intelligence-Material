@@ -1,0 +1,8 @@
+[
+ "Environment ready  ✓  numpy 2.5.3 | matplotlib 3.11.2\n",
+ "H(S) = 0.940\n  Gain(S, Outlook    ) = 0.247\n  Gain(S, Humidity   ) = 0.152\n  Gain(S, Wind       ) = 0.048\n  Gain(S, Temperature) = 0.029\n",
+ "Learned tree: {'Outlook': {'Overcast': 'Yes', 'Rain': {'Wind': {'Strong': 'No', 'Weak': 'Yes'}}, 'Sunny': {'Humidity': {'High': 'No', 'Normal': 'Yes'}}}} \n\nIF Outlook = Overcast  THEN Play = Yes\nIF Outlook = Rain AND Wind = Strong  THEN Play = No\nIF Outlook = Rain AND Wind = Weak  THEN Play = Yes\nIF Outlook = Sunny AND Humidity = High  THEN Play = No\nIF Outlook = Sunny AND Humidity = Normal  THEN Play = Yes\n\nTraining accuracy: 100%\n",
+ "",
+ "Test accuracy: 0.933\nConfusion matrix:\n [[15  0  0]\n [ 0 14  1]\n [ 0  2 13]]\n\nRules learned:\n|--- petal width (cm) <= 0.70\n|   |--- class: 0\n|--- petal width (cm) >  0.70\n|   |--- petal width (cm) <= 1.55\n|   |   |--- petal length (cm) <= 4.95\n|   |   |   |--- class: 1\n|   |   |--- petal length (cm) >  4.95\n|   |   |   |--- class: 2\n|   |--- petal width (cm) >  1.55\n|   |   |--- petal length (cm) <= 4.85\n|   |   |   |--- class: 1\n|   |   |--- petal length (cm) >  4.85\n|   |   |   |--- class: 2\n\n",
+ ""
+]

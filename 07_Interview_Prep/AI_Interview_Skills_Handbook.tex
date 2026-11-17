@@ -1,0 +1,932 @@
+\documentclass[11pt]{article}
+\usepackage{../common/ai204}
+\renewcommand{\doctitle}{Interview \& Industry Skills}
+\begin{document}
+\aicover{Interview \& Industry-Skills Handbook}{75 unit-wise interview questions with model answers \textbullet\ 10 solved coding problems \textbullet\ skill map}{Concept \textbullet\ Coding \textbullet\ System \& ML Design \textbullet\ Scenario \& Ethics}
+\section*{How to use this handbook}
+This handbook prepares you for the technical interview loops used by AI product companies, AI research labs, start-ups and IT-services / global capability centres (GCCs). The questions are \textbf{practice questions written for this course}, modelled on the topics and formats commonly discussed for such interviews; they are not verbatim questions from any specific company.
+\begin{center}\begin{tabular}{>{\bfseries}l p{11cm}}
+\rowcolor{navy}\textcolor{gold}{Round}&\textcolor{gold}{\textbf{What the interviewer checks}}\\
+\textcolor{teal}{Concept}&Clear definitions, trade-offs and the ability to explain to a non-expert.\\
+\rowcolor{ivory}\textcolor{navyL}{Coding}&Correct, efficient, tested code; complexity analysis; edge cases.\\
+\textcolor{crimson}{Design}&Turning a fuzzy requirement into a system: data, algorithms, scale, metrics, failure modes.\\
+\rowcolor{ivory}\textcolor{leaf}{Scenario}&Judgement in real situations: debugging, product trade-offs, ethics and safety.\\
+\end{tabular}\end{center}
+\begin{keypoint}[Answering framework]
+\textbf{Clarify} the question and constraints $\rightarrow$ \textbf{State} a simple baseline $\rightarrow$ \textbf{Improve} it with the right AI technique $\rightarrow$ \textbf{Analyse} complexity, metrics and risks $\rightarrow$ \textbf{Summarise} in one sentence. For behavioural questions use STAR (Situation, Task, Action, Result).
+\end{keypoint}
+\section*{Skill map: what this course makes you job-ready for}
+\begin{center}\small\begin{tabularx}{\linewidth}{c >{\raggedright}p{4cm} X}
+\rowcolor{navy}\textcolor{gold}{\textbf{Unit}}&\textcolor{gold}{\textbf{Core skill}}&\textcolor{gold}{\textbf{Job roles}}\\
+I&Translating a vague business problem into an agent specification (PEAS)&AI Product Analyst, Junior ML Engineer, Solutions Engineer\\
+\rowcolor{ivory}II&Implementing BFS, DFS, UCS, IDS and A* from scratch with clean, tested code&Software Engineer (algorithms), Routing / Logistics Engineer, Game AI Developer, Operations Research Analyst\\
+III&Encoding domain rules as logic and knowledge graphs&Knowledge Engineer, Knowledge-Graph Engineer, Conversational AI Engineer, Compliance-tech Developer\\
+\rowcolor{ivory}IV&Writing planning domains (STRIPS / PDDL) and reading planner output&Data Scientist, Robotics Planning Engineer, Risk / Fraud Analyst, Embedded AI Engineer\\
+V&Training, evaluating and interpreting decision-tree models&ML Engineer, Data Scientist, Conversational AI Developer, Responsible-AI Analyst\\
+\end{tabularx}\end{center}
+\section*{A 4-week interview-preparation plan}
+\begin{tabularx}{\linewidth}{>{\bfseries\color{navy}}l X}\toprule
+Week 1&Units I--II concept questions; code BFS, DFS, UCS and A* from memory; 2 grid/graph problems daily.\\
+Week 2&Units III--IV; implement unification and Naïve Bayes from scratch; practise Bayes' rule numericals aloud.\\
+Week 3&Unit V; build one end-to-end ML project with a model card; practise two design questions per day.\\
+Week 4&Mock interviews in pairs using this handbook; polish GitHub portfolio and resume bullets with numbers.\\\bottomrule
+\end{tabularx}
+\newpage
+\unitbanner{I}{Introduction to AI and Intelligent Agents}{15 Questions \textbullet\ CO204.1}
+\begin{tcolorbox}[enhanced,colback=navy,colframe=gold,boxrule=1.2pt,arc=2mm,coltext=white,
+ title={\textbf{Top industry skills you gain in Unit I}},fonttitle=\color{navy},colbacktitle=gold]
+\begin{itemize}\setlength\itemsep{1pt}
+\item Translating a vague business problem into an agent specification (PEAS)
+\item Classifying environments to pick a feasible AI approach
+\item Formulating problems as state spaces with clear actions, costs and goal tests
+\item Explaining AI history and limits clearly to non-technical stakeholders
+\item Comparing reflex, goal, utility and learning agent designs
+\item Reading problem statements critically before coding
+\end{itemize}
+\end{tcolorbox}
+\begin{tabularx}{\linewidth}{>{\bfseries\color{navy}}p{3.4cm}X}
+Tools to master & Python, NetworkX, Jupyter, Draw.io / Excalidraw for agent diagrams\\
+Job roles & AI Product Analyst, Junior ML Engineer, Solutions Engineer\\
+Portfolio output & A one-page PEAS + architecture design doc for a real campus or city problem, with a state-space prototype in a notebook.\\
+\end{tabularx}
+\subsection*{\color{teal}Concept round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.01}\quad What is a rational agent, and why is rational not the same as perfect?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} A rational agent picks the action with the highest expected performance given its percepts and knowledge. It can still get a bad outcome because it cannot see the future or the full state; rationality is judged on the decision, not on luck.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.02}\quad Write the PEAS description for a food-delivery app's rider-assignment agent.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} Performance: delivery time, cost, rider utilisation, customer rating. Environment: city roads, traffic, restaurants, riders, customers. Actuators: assign order, re-route, notify. Sensors: GPS, order stream, traffic feed, rider status.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.03}\quad Classify a warehouse robot's environment along the seven properties and say which property makes it hardest.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Robotics / Autonomy}\par\smallskip
+\textbf{\color{navy}Model answer.} Partially observable, multi-agent, stochastic, sequential, dynamic, continuous, mostly known. Partial observability combined with other moving agents is hardest because the robot must track state it cannot see while others change it.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.04}\quad Is passing the Turing Test evidence of intelligence? Argue both sides briefly.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} For: it is an operational, behaviour-based test that avoids defining 'thinking'. Against: it rewards imitation and deception, ignores grounding and understanding (Chinese Room), and modern LLMs can fool judges in short chats without reliable reasoning.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.05}\quad When would you choose a utility-based agent over a goal-based agent?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} When goals conflict or outcomes are uncertain, e.g. a ride-hailing pricing agent trading off revenue, wait time and fairness. A utility function lets the agent rank partial successes and compute expected utility, which a binary goal cannot.
+\end{tcolorbox}
+\subsection*{\color{navyL}Coding round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.06}\quad Write a function that returns all valid successor states for the Water-Jug problem (capacities a, b).},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Return fill-A, fill-B, empty-A, empty-B, pour A$\to$B with d = min(x, b--y), pour B$\to$A with d = min(y, a--x); drop any successor equal to the current state. O(1) per state.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.07}\quad Given an 8-puzzle state, decide in O(n$^2$) whether it is solvable.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Count inversions among the 8 tiles (ignore the blank). For a 3$\times$3 board the state is solvable iff the inversion count is even. See the coding notebook for the implementation.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.08}\quad Implement a simple-reflex vacuum agent and a model-based one; show where the reflex agent fails.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Gaming}\par\smallskip
+\textbf{\color{navy}Model answer.} Reflex: if dirty Suck else move. In a world where it cannot sense location it loops; the model-based agent remembers which squares are clean and stops (NoOp) when all are clean, saving moves.
+\end{tcolorbox}
+\subsection*{\color{crimson}Design round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.09}\quad Design an agent that schedules campus classrooms. Give the state space and the performance measure.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} State: partial assignment of (course, room, slot). Actions: assign or move a course. Goal: all courses placed with no clash and capacity met. Performance: hard-constraint violations (must be 0) plus soft penalties such as gaps or room changes. Solve as a CSP with local repair.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.10}\quad Design a learning agent for an autonomous shuttle on a university campus. What are the critic and the problem generator?},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Robotics / Autonomy}\par\smallskip
+\textbf{\color{navy}Model answer.} Performance element: perception + planning stack. Critic: compares behaviour against a safety and comfort standard (near-misses, jerk, delays). Learning element: updates policies or cost weights from logged drives. Problem generator: proposes safe exploratory scenarios in simulation, not on real roads.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.11}\quad A bank wants 'AI' to reduce loan-processing time. How do you turn this into a well-defined AI problem?},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} Clarify the decision (approve / refer / reject), the data available, the performance measure (time, default rate, fairness), constraints (regulation, explainability) and the human-in-the-loop points. Then choose the agent type and formulate inputs, actions and evaluation.
+\end{tcolorbox}
+\subsection*{\color{leaf}Scenario round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.12}\quad A hospital asks for an 'omniscient' triage AI. How do you set expectations?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} HealthTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Explain that the agent acts on available evidence, so it will sometimes be wrong; define a measurable performance target, keep clinicians in the loop, and design for safe failure such as escalation when confidence is low.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.13}\quad Your agent's performance measure is 'number of tickets closed'. What can go wrong?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Reward hacking: the agent closes tickets without solving them. Measure what you actually want (resolved without reopen, customer satisfaction) and add guard-rails; design the performance measure around the desired environment state, not agent behaviour.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.14}\quad How would you explain to a manager why AI had 'winters', and what that means for today's projects?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} Hype outran capability (combinatorial explosion, brittle expert systems, limited compute and data). The lesson is to scope projects to proven capability, measure value early and avoid over-promising.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QI.15}\quad Customers want a fully autonomous AI agent that sends emails on their behalf. What design safeguards do you propose?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} Least-privilege actions, confirmation for irreversible or external actions, audit logs, rate limits, clear undo paths, and monitoring for prompt-injection from incoming content. Start with a draft-and-approve mode before full autonomy.
+\end{tcolorbox}
+\newpage
+\unitbanner{II}{Problem Solving by Search}{15 Questions \textbullet\ CO204.2}
+\begin{tcolorbox}[enhanced,colback=navy,colframe=gold,boxrule=1.2pt,arc=2mm,coltext=white,
+ title={\textbf{Top industry skills you gain in Unit II}},fonttitle=\color{navy},colbacktitle=gold]
+\begin{itemize}\setlength\itemsep{1pt}
+\item Implementing BFS, DFS, UCS, IDS and A* from scratch with clean, tested code
+\item Designing admissible heuristics and reasoning about complexity
+\item Using priority queues, hash maps and visited sets correctly
+\item Applying local search / metaheuristics to optimisation problems
+\item Building game agents with Minimax and alpha--beta
+\item Modelling scheduling/allocation as CSPs and using solvers
+\end{itemize}
+\end{tcolorbox}
+\begin{tabularx}{\linewidth}{>{\bfseries\color{navy}}p{3.4cm}X}
+Tools to master & Python heapq / collections, NetworkX, Google OR-Tools, Pygame (visualisers)\\
+Job roles & Software Engineer (algorithms), Routing / Logistics Engineer, Game AI Developer, Operations Research Analyst\\
+Portfolio output & A path-finding visualiser (BFS / A*) and a Sudoku or timetable CSP solver on GitHub with benchmarks.\\
+\end{tabularx}
+\subsection*{\color{teal}Concept round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.01}\quad Compare BFS and DFS on time, space, completeness and optimality.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} BFS: O($b^{d}$) time and space, complete, optimal for unit costs. DFS: O($b^{m}$) time, O(bm) space, not complete in infinite or cyclic spaces without checks, not optimal.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.02}\quad What makes a heuristic admissible and consistent? Give an example that is admissible but not consistent.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Admissible: never overestimates the true cost. Consistent: h(n) $\le$ c(n,n$'$) + h(n$'$). Example: on a path S$\to$A$\to$G with costs 1 and 1, h(S)=2, h(A)=0, h(G)=0 is admissible but violates consistency because h(S) > c(S,A) + h(A).
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.03}\quad Why is iterative deepening not much slower than BFS?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} Most nodes are at the deepest level; re-expanding shallower levels adds only a constant factor (about b/(b--1)). Total work stays O($b^{d}$) while memory is only O(bd).
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.04}\quad How does move ordering affect alpha--beta pruning?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Gaming}\par\smallskip
+\textbf{\color{navy}Model answer.} Searching the best moves first tightens $\alpha$ and $\beta$ early, so more branches are pruned. With perfect ordering the effective branching factor drops to about $\surd$b, roughly doubling search depth for the same time.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.05}\quad Why does simulated annealing escape local optima while hill climbing does not?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} It accepts worse moves with probability $e^{\Delta E/T}$. At high temperature it explores widely; as T falls it settles. A slow enough cooling schedule converges to a global optimum with high probability.
+\end{tcolorbox}
+\subsection*{\color{navyL}Coding round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.06}\quad Find the shortest path in a grid with obstacles (4-directional). Return its length or --1.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} BFS from the start with a visited set; each layer is one step. O(R$\cdot$C) time and space. Use A* with Manhattan distance for large grids.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.07}\quad Implement Dijkstra / uniform-cost search with a heap and explain the stale-entry trick.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Push (cost, node); when popping, skip the entry if its cost is larger than the best known distance (lazy deletion). O((V+E) log V).
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.08}\quad Solve N-Queens and return the number of solutions for N = 8.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Backtracking column by column with sets for used rows and both diagonals (r--c, r+c). There are 92 solutions for N = 8; bitmasks make it faster.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.09}\quad Write Minimax with alpha--beta for Tic-Tac-Toe and report nodes visited.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Gaming}\par\smallskip
+\textbf{\color{navy}Model answer.} Recursive max/min with $\alpha$, $\beta$; return utility at terminals. From the empty board plain Minimax visits about 550k nodes, alpha--beta about 18k. See the lab Experiment 4.
+\end{tcolorbox}
+\subsection*{\color{crimson}Design round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.10}\quad Design the route engine for a ride-hailing app serving a city of 10 million people.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Pre-process the road graph (contraction hierarchies or hub labels) for fast shortest paths, use live traffic as edge weights updated by stream, A* or bidirectional search for queries, caching for frequent pairs, and sharding by region. Measure p99 latency and ETA error.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.11}\quad Design an exam-timetabling system for a university.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} Model as a CSP: variables are exams; domains are (slot, room) pairs; constraints cover student clashes, capacity and invigilators. Use MRV + forward checking, then local search (min-conflicts) to optimise soft constraints. Provide a manual override UI.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.12}\quad How would you optimise delivery routes for 200 vans each morning?},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} FinTech}\par\smallskip
+\textbf{\color{navy}Model answer.} It is a vehicle-routing problem (NP-hard): start with a constructive heuristic, improve with local search or metaheuristics (2-opt, simulated annealing, GA), or use OR-Tools; respect time windows and capacities; re-plan incrementally during the day.
+\end{tcolorbox}
+\subsection*{\color{leaf}Scenario round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.13}\quad Your A* search is slow on a large map. What do you check first?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Heuristic quality (too weak $\to$ near-Dijkstra), duplicate states in the frontier, an inefficient priority queue, no closed set, memory pressure. Then consider bidirectional search, hierarchical maps or pre-computed landmarks (ALT).
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.14}\quad An opponent AI is 'too perfect' and players quit. What do you change?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Gaming}\par\smallskip
+\textbf{\color{navy}Model answer.} Limit search depth, add randomness among near-best moves, use a weaker evaluation function by difficulty level, and tune against player-retention metrics. Perfect play is not the product goal; fun is.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QII.15}\quad A greedy heuristic gives good routes 95\% of the time but occasionally terrible ones. How do you decide whether to ship it?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} Quantify the tail (worst-case cost and frequency), assess business impact, add a fallback such as a time-bounded A* or a sanity check, and monitor in production. Ship with guard-rails if the tail is detectable and recoverable.
+\end{tcolorbox}
+\newpage
+\unitbanner{III}{Knowledge Representation and Reasoning}{15 Questions \textbullet\ CO204.3}
+\begin{tcolorbox}[enhanced,colback=navy,colframe=gold,boxrule=1.2pt,arc=2mm,coltext=white,
+ title={\textbf{Top industry skills you gain in Unit III}},fonttitle=\color{navy},colbacktitle=gold]
+\begin{itemize}\setlength\itemsep{1pt}
+\item Encoding domain rules as logic and knowledge graphs
+\item Implementing unification, forward and backward chaining
+\item Writing and debugging Prolog / rule-engine style programs
+\item Designing ontologies and querying them (RDF, SPARQL)
+\item Combining symbolic knowledge with LLMs (knowledge-grounded answers)
+\item Explaining why a system reached a conclusion (traceability)
+\end{itemize}
+\end{tcolorbox}
+\begin{tabularx}{\linewidth}{>{\bfseries\color{navy}}p{3.4cm}X}
+Tools to master & SWI-Prolog / PySwip, rdflib, Protégé, Neo4j (knowledge graphs)\\
+Job roles & Knowledge Engineer, Knowledge-Graph Engineer, Conversational AI Engineer, Compliance-tech Developer\\
+Portfolio output & A small knowledge graph (e.g. department courses and prerequisites) with SPARQL queries and a rule-based Q\&A layer.\\
+\end{tabularx}
+\subsection*{\color{teal}Concept round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.01}\quad Differentiate propositional logic and first-order logic with an example.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} Propositional logic uses atomic true/false symbols (Rain $\to$ WetGround). FOL adds objects, predicates, functions and quantifiers ($\forall$x Student(x) $\Rightarrow$ Person(x)), so one sentence covers many cases.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.02}\quad What is unification? Unify Knows(John, x) with Knows(y, Mother(y)).},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Unification finds a substitution that makes two expressions identical. Here $\theta$ = {y/John, x/Mother(John)}.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.03}\quad Forward vs backward chaining --- when do you prefer each?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} Forward chaining is data-driven and suits monitoring and alerts where new facts arrive. Backward chaining is goal-driven and suits answering specific queries or diagnosis, avoiding irrelevant derivations.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.04}\quad What is the difference between a knowledge graph and a relational database?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} A knowledge graph stores entities and typed relationships as a graph with a flexible schema and supports traversal and inference; a relational database stores fixed-schema tables optimised for joins and transactions.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.05}\quad Why is resolution refutation-complete but FOL entailment only semi-decidable?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} If KB $\models$ $\alpha$, resolution on KB $\wedge$ $\neg$$\alpha$ will eventually derive the empty clause. If not entailed, the search may never terminate because FOL can generate infinitely many clauses.
+\end{tcolorbox}
+\subsection*{\color{navyL}Coding round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.06}\quad Implement a truth-table checker that decides whether KB entails $\alpha$.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Enumerate all $2^{n}$ assignments; whenever KB is true, $\alpha$ must also be true. Return False on the first counter-model. O($2^{n}$ $\cdot$ |KB|).
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.07}\quad Write a forward-chaining engine for Horn rules and report derived facts.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} Keep a fact set; loop over rules and fire those whose premises are all present; stop at a fixed point. Use a count-of-unsatisfied-premises agenda for linear time.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.08}\quad Implement unification with the occurs check.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} Recursively walk variable bindings; bind a variable unless it occurs in the other term; unify compound terms argument by argument. See lab Experiment 7.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.09}\quad Given parent(x, y) facts, write a query for all cousins of a person.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} cousin(a, b) if parent(p, a), parent(q, b), sibling(p, q), with sibling(p, q) if parent(g, p), parent(g, q), p $\ne$ q. Implement with dictionaries or as Prolog rules.
+\end{tcolorbox}
+\subsection*{\color{crimson}Design round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.10}\quad Design a knowledge graph to power product search for an e-commerce site.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Entities: product, brand, category, attribute, user intent; relations: is-a, has-attribute, compatible-with. Build from catalogue plus extraction; use it for query expansion and faceting; keep it fresh with pipelines and quality checks.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.11}\quad How would you reduce hallucinations in an LLM chatbot for university regulations?},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} Retrieval-augmented generation over the official rule documents, plus a rule base / knowledge graph for hard facts (fees, dates), citations in answers, refusal when no source is found, and evaluation on a curated question set.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.12}\quad Design a rule engine for transaction compliance checks.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} FinTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Declarative rules (IF amount > limit AND country in list THEN flag), versioning and testing of rules, Rete-style matching for speed, an explanation trail for auditors, and a path for analysts to update rules without code deploys.
+\end{tcolorbox}
+\subsection*{\color{leaf}Scenario round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.13}\quad A clinical rule system gives a wrong recommendation. How do you debug it?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} HealthTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Trace the inference path (which facts fired which rules), check fact quality, look for conflicting or outdated rules and their priority, add a regression test, and review with domain experts.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.14}\quad The client's domain experts disagree on rules. How do you build the knowledge base?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} Capture both views with provenance, find the scope where each applies, use certainty factors or priorities, and agree a governance process for resolution; never silently pick one.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIII.15}\quad When would you still choose symbolic AI over a neural model today?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} When you need guaranteed constraints, auditability, small data, or exact reasoning (tax rules, safety interlocks). Hybrids are common: neural models for perception or language, symbolic layers for rules and verification.
+\end{tcolorbox}
+\newpage
+\unitbanner{IV}{Planning and Reasoning under Uncertainty}{15 Questions \textbullet\ CO204.4}
+\begin{tcolorbox}[enhanced,colback=navy,colframe=gold,boxrule=1.2pt,arc=2mm,coltext=white,
+ title={\textbf{Top industry skills you gain in Unit IV}},fonttitle=\color{navy},colbacktitle=gold]
+\begin{itemize}\setlength\itemsep{1pt}
+\item Writing planning domains (STRIPS / PDDL) and reading planner output
+\item Reasoning with Bayes' rule and avoiding base-rate errors
+\item Building and querying Bayesian networks
+\item Quantifying uncertainty in model predictions
+\item Designing fuzzy controllers for embedded systems
+\item Communicating probabilistic results to decision makers
+\end{itemize}
+\end{tcolorbox}
+\begin{tabularx}{\linewidth}{>{\bfseries\color{navy}}p{3.4cm}X}
+Tools to master & pyperplan / Fast Downward, pgmpy, scikit-fuzzy, NumPy / SciPy\\
+Job roles & Data Scientist, Robotics Planning Engineer, Risk / Fraud Analyst, Embedded AI Engineer\\
+Portfolio output & A diagnostic Bayesian network with a written sensitivity analysis, plus a fuzzy controller with its control-surface plot.\\
+\end{tabularx}
+\subsection*{\color{teal}Concept round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.01}\quad State Bayes' theorem and explain prior, likelihood and posterior.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} FinTech}\par\smallskip
+\textbf{\color{navy}Model answer.} P(H|E) = P(E|H)P(H)/P(E). The prior is belief before evidence, the likelihood is how probable the evidence is if H holds, and the posterior is the updated belief.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.02}\quad A test is 99\% sensitive with a 1\% false-positive rate; prevalence is 0.1\%. What is P(disease | +)?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} HealthTech}\par\smallskip
+\textbf{\color{navy}Model answer.} 0.99$\times$0.001 / (0.99$\times$0.001 + 0.01$\times$0.999) $\approx$ 0.090, so about 9\%. Low prevalence dominates; confirmatory testing is needed.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.03}\quad What is STRIPS? Write the Move(x, from, to) action for a robot.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Robotics / Autonomy}\par\smallskip
+\textbf{\color{navy}Model answer.} STRIPS describes actions by precondition, add and delete lists. Move: PRE At(x, from) $\wedge$ Clear(to); ADD At(x, to), Clear(from); DEL At(x, from), Clear(to).
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.04}\quad Why is a Bayesian network more compact than a full joint table?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} It uses conditional independence: each variable depends only on its parents, so storage is about n$\cdot$$2^{k}$ numbers instead of $2^{n}$ for n Boolean variables with at most k parents.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.05}\quad Probability vs fuzzy logic --- what does each model?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} Probability models uncertainty about whether a crisp event happens. Fuzzy logic models vagueness, i.e. the degree to which a property holds (how 'hot' 32 $^\circ$C is).
+\end{tcolorbox}
+\subsection*{\color{navyL}Coding round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.06}\quad Implement Na\"{i}ve Bayes for spam detection from word counts.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} FinTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Estimate P(class) and P(word|class) with Laplace smoothing; score log P(c) + $\Sigma$ log P(w|c); choose the larger. Use log-probabilities to avoid underflow.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.07}\quad Compute P(Burglary | JohnCalls, MaryCalls) by enumeration.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} Sum the joint over the hidden variables Earthquake and Alarm for B = true and B = false, then normalise. Result $\approx$ 0.284. See lab Experiment 8.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.08}\quad Write a triangular membership function and fuzzify 18 $^\circ$C into Cold/Warm/Hot.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Robotics / Autonomy}\par\smallskip
+\textbf{\color{navy}Model answer.} $\mu$(x; a, b, c) = max(min((x--a)/(b--a), (c--x)/(c--b)), 0). With Cold(--$\infty$,10,20), Warm(10,25,40), Hot(30,40,$\infty$): Cold 0.2, Warm 0.53, Hot 0.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.09}\quad Simulate a Monte-Carlo estimate of a posterior and show its convergence.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Use rejection sampling or likelihood weighting; plot the running estimate vs sample count; error falls roughly as 1/$\surd$N.
+\end{tcolorbox}
+\subsection*{\color{crimson}Design round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.10}\quad Design a real-time fraud-scoring system that must explain its decisions.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} FinTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Streaming features (velocity, device, geography), a calibrated probabilistic model or gradient-boosted trees with reason codes, rules for hard blocks, thresholds tuned to business cost, human review queue, and drift monitoring.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.11}\quad Design the task planner for a hospital delivery robot.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Robotics / Autonomy}\par\smallskip
+\textbf{\color{navy}Model answer.} PDDL domain (rooms, lifts, doors, items), a classical planner for task order, a motion planner for paths, replanning on failure, and probabilistic handling of busy lifts. Add safety constraints and logging.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.12}\quad How would you add uncertainty estimates to a model's predictions shown to users?},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} Use calibrated probabilities (Platt or isotonic), ensembles or MC-dropout for variance, prediction intervals for regression, and UI that shows confidence plus 'why'; abstain when uncertainty is high.
+\end{tcolorbox}
+\subsection*{\color{leaf}Scenario round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.13}\quad Doctors over-trust a model's 0.9 'probability'. What do you check and change?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} HealthTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Check calibration on held-out data from the same hospital; recalibrate if needed; display risk with context (base rate, intervals); train users; monitor outcomes.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.14}\quad Your plan works in simulation but fails in the real warehouse. Why?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Robotics / Autonomy}\par\smallskip
+\textbf{\color{navy}Model answer.} Classical assumptions break: actions are not deterministic, the state is partially observable, the world changes. Add execution monitoring, replanning, probabilistic models and sensor checks.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QIV.15}\quad A fraud model flags many legitimate transactions from one region. How do you respond?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} FinTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Measure false-positive rates by region, inspect features acting as proxies, re-weight or adjust thresholds, add review, document the fix, and monitor; consider the fairness and regulatory implications.
+\end{tcolorbox}
+\newpage
+\unitbanner{V}{Learning, Expert Systems and Applications of AI}{15 Questions \textbullet\ CO204.5}
+\begin{tcolorbox}[enhanced,colback=navy,colframe=gold,boxrule=1.2pt,arc=2mm,coltext=white,
+ title={\textbf{Top industry skills you gain in Unit V}},fonttitle=\color{navy},colbacktitle=gold]
+\begin{itemize}\setlength\itemsep{1pt}
+\item Training, evaluating and interpreting decision-tree models
+\item Explaining overfitting, bias--variance and validation strategy
+\item Building a perceptron / small neural network and debugging training
+\item Designing rule-based expert systems and chatbots with fallbacks
+\item Auditing models for bias, privacy and explainability
+\item Mapping NLP, vision and robotics problems to the right technique
+\end{itemize}
+\end{tcolorbox}
+\begin{tabularx}{\linewidth}{>{\bfseries\color{navy}}p{3.4cm}X}
+Tools to master & scikit-learn, PyTorch / Keras, SHAP / Fairlearn, Rasa or simple intent classifiers\\
+Job roles & ML Engineer, Data Scientist, Conversational AI Developer, Responsible-AI Analyst\\
+Portfolio output & An end-to-end classifier with a model card (data, metrics, fairness checks, limitations) and a deployed demo.\\
+\end{tabularx}
+\subsection*{\color{teal}Concept round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.01}\quad Explain supervised, unsupervised and reinforcement learning with one industry example each.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} Supervised: credit-risk scoring from labelled defaults. Unsupervised: customer segmentation by clustering. Reinforcement: dynamic pricing or robot control learned from rewards.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.02}\quad How does a decision tree choose a split? Compare entropy and Gini.},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} It picks the split with the largest impurity reduction. Entropy uses --$\Sigma$p log p; Gini uses 1 -- $\Sigma$p$^2$. They usually give similar trees; Gini is slightly cheaper to compute.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.03}\quad Why can't a single perceptron learn XOR?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} XOR is not linearly separable; a perceptron draws one line. A hidden layer creates a non-linear boundary, so a 2-layer MLP solves it.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.04}\quad What is overfitting and how do you detect and prevent it?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} The model fits noise: training accuracy is high, validation accuracy is low. Detect with validation curves; prevent with more data, regularisation, pruning or max depth, early stopping and cross-validation.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.05}\quad Precision vs recall --- which matters more for cancer screening?},fonttitle=\color{white}\small,colbacktitle=teal]
+\colorbox{teal!15}{\scriptsize\bfseries\color{teal} CONCEPT}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} HealthTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Recall, because missing a cancer (false negative) is costly; precision is then improved with follow-up tests. Report both with the threshold chosen for clinical needs.
+\end{tcolorbox}
+\subsection*{\color{navyL}Coding round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.06}\quad Compute entropy and information gain for a split from scratch.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} EASY}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} H = --$\Sigma$ p log$_2$ p over class proportions; Gain = H(parent) -- $\Sigma$ (n\_child/n) H(child). For Play Tennis, Outlook gives 0.247.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.07}\quad Train a perceptron for AND/OR and print the final weights.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Initialise weights to 0; for each sample update w += $\eta$(y -- $\hat y$)x until no errors. AND converges to a boundary such as x$_1$ + x$_2$ $\ge$ 2.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.08}\quad Write an intent classifier for a chatbot with a fallback.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} Use TF-IDF + logistic regression (or keyword rules for a baseline), predict the intent with its probability, and return the fallback when the max probability is below a threshold; log misses for retraining.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=navyL,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.09}\quad Build a decision tree with scikit-learn and extract human-readable rules.},fonttitle=\color{white}\small,colbacktitle=navyL]
+\colorbox{navyL!15}{\scriptsize\bfseries\color{navyL} CODING}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} IT Services / GCC}\par\smallskip
+\textbf{\color{navy}Model answer.} fit DecisionTreeClassifier(max\_depth=3), then export\_text(model, feature\_names). Validate on a held-out split and report a confusion matrix. See lab Experiment 9.
+\end{tcolorbox}
+\subsection*{\color{crimson}Design round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.10}\quad Design a content-moderation system for a social platform in Indian languages.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Multilingual text and image classifiers, policy taxonomy, thresholds per category, human review for borderline cases, appeal flow, feedback loop for retraining, and metrics per language to catch bias.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.11}\quad Design an expert-system-plus-ML assistant for rural primary-health workers.},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} HealthTech}\par\smallskip
+\textbf{\color{navy}Model answer.} Rule-based triage protocol for safety-critical decisions, an ML model for risk ranking, offline-first mobile app, local-language voice UI, escalation to doctors, and audit logs; validate with clinicians.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.12}\quad How would you deploy and monitor a model in production?},fonttitle=\color{white}\small,colbacktitle=crimson]
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} DESIGN}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} Package with versioned data and model, serve behind an API, track latency and errors, monitor input drift and prediction drift, collect labels to measure live accuracy, and keep a rollback path.
+\end{tcolorbox}
+\subsection*{\color{leaf}Scenario round}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.13}\quad A hiring model rates women lower for the same CV. What do you do?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} Product / Big Tech}\par\smallskip
+\textbf{\color{navy}Model answer.} Stop using it for decisions, audit features and training data for proxies, measure group metrics, retrain with mitigation, add human review, document in a model card, and involve legal/HR.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.14}\quad Your model is 98\% accurate on a dataset with 2\% positives. Is it good?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{gold!85!black!15}{\scriptsize\bfseries\color{gold!85!black} MEDIUM}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Research Lab}\par\smallskip
+\textbf{\color{navy}Model answer.} Not necessarily: predicting all negatives also gives 98\%. Use precision, recall, F1, PR-AUC and the confusion matrix, and compare with a baseline.
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=leaf,arc=2mm,boxrule=0.8pt,left=3mm,right=3mm,
+ title={\textbf{QV.15}\quad A client wants face recognition for classroom attendance. What do you advise?},fonttitle=\color{white}\small,colbacktitle=leaf]
+\colorbox{leaf!15}{\scriptsize\bfseries\color{leaf} SCENARIO}\
+\colorbox{crimson!15}{\scriptsize\bfseries\color{crimson} HARD}\
+\colorbox{navy!8}{\scriptsize\bfseries\color{navy} AI Startup}\par\smallskip
+\textbf{\color{navy}Model answer.} Assess necessity and consent, privacy law (DPDP Act 2023), data retention, accuracy across demographic groups, and security; propose less intrusive alternatives (QR or app check-in) or opt-in with clear policies.
+\end{tcolorbox}
+\newpage
+\section*{Solved Coding Problems}
+All ten solutions are executed with tests in \texttt{07\_Interview\_Prep/Interview\_Coding\_Solutions.ipynb}.
+\subsection*{C01. 8-puzzle solvability check \hfill\co{Unit I}}
+\textit{Given a 3$\times$3 8-puzzle state as a tuple (0 = blank), return True if it can reach 1-2-3/4-5-6/7-8-\_ . Target: O(n$^2$) or better.}
+\begin{lstlisting}[style=py]
+def solvable(state):
+    tiles = [t for t in state if t != 0]
+    inversions = sum(1 for i in range(len(tiles)) for j in range(i + 1, len(tiles)) if tiles[i] > tiles[j])
+    return inversions % 2 == 0          # 3x3 board: solvable iff inversions are even
+
+tests = {(1,2,3,4,5,6,7,8,0): True, (1,2,3,4,5,6,8,7,0): False, (1,8,2,0,4,3,7,6,5): True, (8,1,2,0,4,3,7,6,5): False}
+for s, exp in tests.items():
+    assert solvable(s) == exp
+    print(s, "-> solvable" if solvable(s) else "-> NOT solvable")
+print("All tests passed [ok]")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+(1, 2, 3, 4, 5, 6, 7, 8, 0) -> solvable
+(1, 2, 3, 4, 5, 6, 8, 7, 0) -> NOT solvable
+(1, 8, 2, 0, 4, 3, 7, 6, 5) -> solvable
+(8, 1, 2, 0, 4, 3, 7, 6, 5) -> NOT solvable
+All tests passed [ok]
+\end{lstlisting}
+\subsection*{C02. Water-Jug: minimum steps \hfill\co{Unit I}}
+\textit{Jugs of capacity a and b litres; return the minimum number of operations to measure exactly t litres in either jug, or --1.}
+\begin{lstlisting}[style=py]
+from collections import deque
+def min_steps(a, b, t):
+    start = (0, 0); dist = {start: 0}; q = deque([start])
+    while q:
+        x, y = q.popleft()
+        if x == t or y == t: return dist[(x, y)]
+        for n in ((a, y), (x, b), (0, y), (x, 0),
+                  (x - min(x, b - y), y + min(x, b - y)), (x + min(y, a - x), y - min(y, a - x))):
+            if n not in dist: dist[n] = dist[(x, y)] + 1; q.append(n)
+    return -1
+for a, b, t in ((4, 3, 2), (5, 3, 4), (6, 4, 1)):
+    print(f"jugs ({a},{b}), target {t}: {min_steps(a, b, t)} steps")
+assert min_steps(4, 3, 2) == 4 and min_steps(6, 4, 1) == -1
+print("All tests passed [ok]")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+jugs (4,3), target 2: 4 steps
+jugs (5,3), target 4: 6 steps
+jugs (6,4), target 1: -1 steps
+All tests passed [ok]
+\end{lstlisting}
+\subsection*{C03. Shortest path in a grid with obstacles \hfill\co{Unit II}}
+\textit{Grid of 0 (free) and 1 (wall). Return the length of the shortest 4-directional path from top-left to bottom-right, or --1.}
+\begin{lstlisting}[style=py]
+from collections import deque
+def shortest_path(grid):
+    R, C = len(grid), len(grid[0])
+    if grid[0][0] or grid[R-1][C-1]: return -1
+    q, seen = deque([(0, 0, 0)]), {(0, 0)}
+    while q:
+        r, c, d = q.popleft()
+        if (r, c) == (R - 1, C - 1): return d
+        for dr, dc in ((1,0),(-1,0),(0,1),(0,-1)):
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < R and 0 <= nc < C and not grid[nr][nc] and (nr, nc) not in seen:
+                seen.add((nr, nc)); q.append((nr, nc, d + 1))
+    return -1
+g = [[0,0,0,0],[1,1,0,1],[0,0,0,0],[0,1,1,0]]
+print("Shortest path length:", shortest_path(g))
+assert shortest_path(g) == 6 and shortest_path([[0,1],[1,0]]) == -1
+print("All tests passed [ok]   Complexity: O(R.C) time and space")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Shortest path length: 6
+All tests passed [ok]   Complexity: O(R.C) time and space
+\end{lstlisting}
+\subsection*{C04. Count N-Queens solutions with bitmasks \hfill\co{Unit II}}
+\textit{Return the number of ways to place N non-attacking queens. Must handle N = 12 quickly.}
+\begin{lstlisting}[style=py]
+import time
+def n_queens(n):
+    full = (1 << n) - 1
+    def solve(cols, d1, d2):
+        if cols == full: return 1
+        count, free = 0, full & ~(cols | d1 | d2)
+        while free:
+            bit = free & -free; free -= bit
+            count += solve(cols | bit, ((d1 | bit) << 1) & full, (d2 | bit) >> 1)
+        return count
+    return solve(0, 0, 0)
+for n in (4, 6, 8, 10, 12):
+    t = time.time(); print(f"N={n:>2}: {n_queens(n):>6} solutions  ({time.time()-t:.3f}s)")
+assert n_queens(8) == 92
+print("All tests passed [ok]")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+N= 4:      2 solutions  (0.000s)
+N= 6:      4 solutions  (0.000s)
+N= 8:     92 solutions  (0.000s)
+N=10:    724 solutions  (0.010s)
+N=12:  14200 solutions  (0.235s)
+All tests passed [ok]
+\end{lstlisting}
+\subsection*{C05. Propositional entailment by model checking \hfill\co{Unit III}}
+\textit{Given a KB and a query as Python functions over a model, decide whether KB $\models$ query and return a counter-model if not.}
+\begin{lstlisting}[style=py]
+import itertools
+def entails(symbols, kb, query):
+    for vals in itertools.product([False, True], repeat=len(symbols)):
+        m = dict(zip(symbols, vals))
+        if kb(m) and not query(m): return False, m
+    return True, None
+S = ["Rain", "Sprinkler", "Wet"]
+KB = lambda m: (not m["Rain"] or m["Wet"]) and (not m["Sprinkler"] or m["Wet"]) and (m["Rain"] or m["Sprinkler"])
+print("KB |= Wet ?  ", entails(S, KB, lambda m: m["Wet"]))
+print("KB |= Rain ? ", entails(S, KB, lambda m: m["Rain"]))
+assert entails(S, KB, lambda m: m["Wet"])[0] and not entails(S, KB, lambda m: m["Rain"])[0]
+print("All tests passed [ok]")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+KB |= Wet ?   (True, None)
+KB |= Rain ?  (False, {'Rain': False, 'Sprinkler': True, 'Wet': True})
+All tests passed [ok]
+\end{lstlisting}
+\subsection*{C06. Unification with occurs check \hfill\co{Unit III}}
+\textit{Implement unify(x, y) for terms written as nested tuples; variables start with '?'. Return the substitution or None.}
+\begin{lstlisting}[style=py]
+def is_var(t): return isinstance(t, str) and t.startswith("?")
+def walk(t, s):
+    while is_var(t) and t in s: t = s[t]
+    return t
+def occurs(v, t, s):
+    t = walk(t, s)
+    return t == v or (isinstance(t, tuple) and any(occurs(v, a, s) for a in t[1:]))
+def unify(x, y, s=None):
+    s = {} if s is None else s
+    x, y = walk(x, s), walk(y, s)
+    if x == y: return s
+    if is_var(x): return None if occurs(x, y, s) else {**s, x: y}
+    if is_var(y): return unify(y, x, s)
+    if isinstance(x, tuple) and isinstance(y, tuple) and len(x) == len(y) and x[0] == y[0]:
+        for a, b in zip(x[1:], y[1:]):
+            s = unify(a, b, s)
+            if s is None: return None
+        return s
+    return None
+print(unify(("Knows", "John", "?x"), ("Knows", "?y", ("Mother", "?y"))))
+print(unify(("P", "?x"), ("P", ("f", "?x"))))        # occurs check -> None
+assert unify(("P", "?x"), ("P", ("f", "?x"))) is None
+print("All tests passed [ok]")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+{'?y': 'John', '?x': ('Mother', '?y')}
+None
+All tests passed [ok]
+\end{lstlisting}
+\subsection*{C07. Na\"{i}ve Bayes spam filter from scratch \hfill\co{Unit IV}}
+\textit{Train a multinomial Na\"{i}ve Bayes classifier with Laplace smoothing on a tiny corpus and classify new messages.}
+\begin{lstlisting}[style=py]
+import math
+from collections import Counter
+train = [("win cash prize now", "spam"), ("limited offer win free", "spam"), ("free cash claim now", "spam"),
+         ("meeting at ten tomorrow", "ham"), ("lab report due tomorrow", "ham"), ("lunch at canteen today", "ham")]
+classes = {"spam", "ham"}
+prior = {c: sum(1 for _, y in train if y == c) / len(train) for c in classes}
+counts = {c: Counter(w for x, y in train if y == c for w in x.split()) for c in classes}
+vocab = {w for x, _ in train for w in x.split()}
+def predict(msg):
+    scores = {}
+    for c in classes:
+        total = sum(counts[c].values())
+        scores[c] = math.log(prior[c]) + sum(math.log((counts[c][w] + 1) / (total + len(vocab))) for w in msg.split())
+    return max(scores, key=scores.get), scores
+for m in ("claim your free prize", "report meeting tomorrow"):
+    label, sc = predict(m); print(f"{m!r:28} -> {label}   (log-scores: {', '.join(f'{k}={v:.2f}' for k, v in sc.items())})")
+assert predict("claim your free prize")[0] == "spam" and predict("report meeting tomorrow")[0] == "ham"
+print("All tests passed [ok]")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+'claim your free prize'      -> spam   (log-scores: ham=-14.30, spam=-11.81)
+'report meeting tomorrow'    -> ham   (log-scores: ham=-8.41, spam=-10.90)
+All tests passed [ok]
+\end{lstlisting}
+\subsection*{C08. Bayes' rule calculator with sequential evidence \hfill\co{Unit IV}}
+\textit{Write posterior(prior, sensitivity, false\_positive\_rate) and apply it twice for two independent positive tests.}
+\begin{lstlisting}[style=py]
+def posterior(prior, sens, fpr):
+    return sens * prior / (sens * prior + fpr * (1 - prior))
+p1 = posterior(0.001, 0.99, 0.01); p2 = posterior(p1, 0.99, 0.01)
+print(f"After 1 positive test: {p1:.3%}")
+print(f"After 2 positive tests: {p2:.3%}")
+assert abs(p1 - 0.0902) < 1e-3
+print("All tests passed [ok]   Lesson: low base rates dominate a single test")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+After 1 positive test: 9.016%
+After 2 positive tests: 90.750%
+All tests passed [ok]   Lesson: low base rates dominate a single test
+\end{lstlisting}
+\subsection*{C09. Entropy and information gain \hfill\co{Unit V}}
+\textit{Given labels and a candidate attribute, compute entropy and information gain from scratch; verify on Play Tennis (Outlook).}
+\begin{lstlisting}[style=py]
+from collections import Counter
+from math import log2
+def entropy(labels):
+    n = len(labels); return -sum(c / n * log2(c / n) for c in Counter(labels).values())
+def info_gain(values, labels):
+    n = len(labels); rem = 0.0
+    for v in set(values):
+        sub = [l for x, l in zip(values, labels) if x == v]; rem += len(sub) / n * entropy(sub)
+    return entropy(labels) - rem
+outlook = "S S O R R R O S S R S O O R".split()
+play    = "N N Y Y Y N Y N Y Y Y Y Y N".split()
+print(f"H(Play) = {entropy(play):.3f}   Gain(Outlook) = {info_gain(outlook, play):.3f}")
+assert round(info_gain(outlook, play), 3) == 0.247
+print("All tests passed [ok]")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+H(Play) = 0.940   Gain(Outlook) = 0.247
+All tests passed [ok]
+\end{lstlisting}
+\subsection*{C10. Intent classifier with a confidence fallback \hfill\co{Unit V}}
+\textit{Build a small chatbot intent classifier (TF-IDF + logistic regression) that returns a fallback when confidence is low.}
+\begin{lstlisting}[style=py]
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+X = ["what are the fees", "fee structure please", "how much does it cost", "tuition amount",
+     "am i eligible", "eligibility criteria", "minimum marks needed", "is jee required",
+     "hostel facility", "is accommodation available", "where will i stay", "hostel rooms",
+     "placement record", "which companies visit", "average salary package", "job opportunities"]
+y = ["fees"] * 4 + ["eligibility"] * 4 + ["hostel"] * 4 + ["placement"] * 4
+clf = make_pipeline(TfidfVectorizer(ngram_range=(1, 2)), LogisticRegression(C=20, max_iter=1000)).fit(X, y)
+def answer(q, threshold=0.40):
+    probs = clf.predict_proba([q])[0]; i = probs.argmax()
+    label = str(clf.classes_[i]) if probs[i] >= threshold else "fallback"
+    return label, round(float(probs[i]), 2)
+for q in ("what is the fee", "do you have hostel rooms", "companies for placement", "tell me a joke"):
+    print(f"{q!r:30} -> {answer(q)}")
+assert answer("what is the fee")[0] == "fees" and answer("tell me a joke")[0] == "fallback"
+print("All tests passed [ok]")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+'what is the fee'              -> ('fees', 0.62)
+'do you have hostel rooms'     -> ('hostel', 0.9)
+'companies for placement'      -> ('placement', 0.77)
+'tell me a joke'               -> ('fallback', 0.26)
+All tests passed [ok]
+\end{lstlisting}
+\section*{Final checklist before an AI interview}
+\begin{itemize}\item Can you code BFS, Dijkstra/UCS and A* in 15 minutes each, with complexity?
+\item Can you explain admissible vs consistent heuristics with an example?
+\item Can you compute a Bayes' rule posterior and explain the base-rate effect?
+\item Can you compute entropy and information gain by hand?
+\item Can you explain precision, recall, overfitting and how you would monitor a deployed model?
+\item Do you have two GitHub projects with a README, results and a responsible-AI note?\end{itemize}
+\end{document}
