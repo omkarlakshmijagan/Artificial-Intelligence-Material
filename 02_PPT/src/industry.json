@@ -1,0 +1,216 @@
+{
+ "I": {
+  "skills": [
+   "Translating a vague business problem into an agent specification (PEAS)",
+   "Classifying environments to pick a feasible AI approach",
+   "Formulating problems as state spaces with clear actions, costs and goal tests",
+   "Explaining AI history and limits clearly to non-technical stakeholders",
+   "Comparing reflex, goal, utility and learning agent designs",
+   "Reading problem statements critically before coding"
+  ],
+  "roles": [
+   "AI Product Analyst",
+   "Junior ML Engineer",
+   "Solutions Engineer"
+  ],
+  "tools": [
+   "Python",
+   "NetworkX",
+   "Jupyter",
+   "Draw.io / Excalidraw for agent diagrams"
+  ],
+  "portfolio": "A one-page PEAS + architecture design doc for a real campus or city problem, with a state-space prototype in a notebook.",
+  "interview": [
+   [
+    "Concept",
+    "Easy",
+    "Product / Big Tech",
+    "What is a rational agent, and why is rational not the same as perfect?"
+   ],
+   [
+    "Coding",
+    "Easy",
+    "Product / Big Tech",
+    "Write a function that returns all valid successor states for the Water-Jug problem (capacities a, b)."
+   ],
+   [
+    "Design",
+    "Medium",
+    "AI Startup",
+    "Design an agent that schedules campus classrooms. Give the state space and the performance measure."
+   ]
+  ]
+ },
+ "II": {
+  "skills": [
+   "Implementing BFS, DFS, UCS, IDS and A* from scratch with clean, tested code",
+   "Designing admissible heuristics and reasoning about complexity",
+   "Using priority queues, hash maps and visited sets correctly",
+   "Applying local search / metaheuristics to optimisation problems",
+   "Building game agents with Minimax and alpha–beta",
+   "Modelling scheduling/allocation as CSPs and using solvers"
+  ],
+  "roles": [
+   "Software Engineer (algorithms)",
+   "Routing / Logistics Engineer",
+   "Game AI Developer",
+   "Operations Research Analyst"
+  ],
+  "tools": [
+   "Python heapq / collections",
+   "NetworkX",
+   "Google OR-Tools",
+   "Pygame (visualisers)"
+  ],
+  "portfolio": "A path-finding visualiser (BFS / A*) and a Sudoku or timetable CSP solver on GitHub with benchmarks.",
+  "interview": [
+   [
+    "Concept",
+    "Easy",
+    "Product / Big Tech",
+    "Compare BFS and DFS on time, space, completeness and optimality."
+   ],
+   [
+    "Coding",
+    "Medium",
+    "Product / Big Tech",
+    "Find the shortest path in a grid with obstacles (4-directional). Return its length or −1."
+   ],
+   [
+    "Design",
+    "Hard",
+    "Product / Big Tech",
+    "Design the route engine for a ride-hailing app serving a city of 10 million people."
+   ]
+  ]
+ },
+ "III": {
+  "skills": [
+   "Encoding domain rules as logic and knowledge graphs",
+   "Implementing unification, forward and backward chaining",
+   "Writing and debugging Prolog / rule-engine style programs",
+   "Designing ontologies and querying them (RDF, SPARQL)",
+   "Combining symbolic knowledge with LLMs (knowledge-grounded answers)",
+   "Explaining why a system reached a conclusion (traceability)"
+  ],
+  "roles": [
+   "Knowledge Engineer",
+   "Knowledge-Graph Engineer",
+   "Conversational AI Engineer",
+   "Compliance-tech Developer"
+  ],
+  "tools": [
+   "SWI-Prolog / PySwip",
+   "rdflib",
+   "Protégé",
+   "Neo4j (knowledge graphs)"
+  ],
+  "portfolio": "A small knowledge graph (e.g. department courses and prerequisites) with SPARQL queries and a rule-based Q&A layer.",
+  "interview": [
+   [
+    "Concept",
+    "Easy",
+    "IT Services / GCC",
+    "Differentiate propositional logic and first-order logic with an example."
+   ],
+   [
+    "Coding",
+    "Medium",
+    "Product / Big Tech",
+    "Implement a truth-table checker that decides whether KB entails α."
+   ],
+   [
+    "Design",
+    "Hard",
+    "Product / Big Tech",
+    "Design a knowledge graph to power product search for an e-commerce site."
+   ]
+  ]
+ },
+ "IV": {
+  "skills": [
+   "Writing planning domains (STRIPS / PDDL) and reading planner output",
+   "Reasoning with Bayes' rule and avoiding base-rate errors",
+   "Building and querying Bayesian networks",
+   "Quantifying uncertainty in model predictions",
+   "Designing fuzzy controllers for embedded systems",
+   "Communicating probabilistic results to decision makers"
+  ],
+  "roles": [
+   "Data Scientist",
+   "Robotics Planning Engineer",
+   "Risk / Fraud Analyst",
+   "Embedded AI Engineer"
+  ],
+  "tools": [
+   "pyperplan / Fast Downward",
+   "pgmpy",
+   "scikit-fuzzy",
+   "NumPy / SciPy"
+  ],
+  "portfolio": "A diagnostic Bayesian network with a written sensitivity analysis, plus a fuzzy controller with its control-surface plot.",
+  "interview": [
+   [
+    "Concept",
+    "Easy",
+    "FinTech",
+    "State Bayes' theorem and explain prior, likelihood and posterior."
+   ],
+   [
+    "Coding",
+    "Easy",
+    "FinTech",
+    "Implement Naïve Bayes for spam detection from word counts."
+   ],
+   [
+    "Design",
+    "Hard",
+    "FinTech",
+    "Design a real-time fraud-scoring system that must explain its decisions."
+   ]
+  ]
+ },
+ "V": {
+  "skills": [
+   "Training, evaluating and interpreting decision-tree models",
+   "Explaining overfitting, bias–variance and validation strategy",
+   "Building a perceptron / small neural network and debugging training",
+   "Designing rule-based expert systems and chatbots with fallbacks",
+   "Auditing models for bias, privacy and explainability",
+   "Mapping NLP, vision and robotics problems to the right technique"
+  ],
+  "roles": [
+   "ML Engineer",
+   "Data Scientist",
+   "Conversational AI Developer",
+   "Responsible-AI Analyst"
+  ],
+  "tools": [
+   "scikit-learn",
+   "PyTorch / Keras",
+   "SHAP / Fairlearn",
+   "Rasa or simple intent classifiers"
+  ],
+  "portfolio": "An end-to-end classifier with a model card (data, metrics, fairness checks, limitations) and a deployed demo.",
+  "interview": [
+   [
+    "Concept",
+    "Easy",
+    "IT Services / GCC",
+    "Explain supervised, unsupervised and reinforcement learning with one industry example each."
+   ],
+   [
+    "Coding",
+    "Easy",
+    "Product / Big Tech",
+    "Compute entropy and information gain for a split from scratch."
+   ],
+   [
+    "Design",
+    "Hard",
+    "Product / Big Tech",
+    "Design a content-moderation system for a social platform in Indian languages."
+   ]
+  ]
+ }
+}
