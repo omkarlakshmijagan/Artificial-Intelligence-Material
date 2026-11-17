@@ -1,8 +1,4 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="26UAMPC204 Artificial Intelligence — Sanjivani University" width="100%">
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/badge/Course-26UAMPC204-0B1F4B?style=for-the-badge" alt="Course code">
   <img src="https://img.shields.io/badge/Credits-3%20(2--0--2)-C9A227?style=for-the-badge" alt="Credits">
   <img src="https://img.shields.io/badge/Python-3.10%2B-0E7C86?style=for-the-badge&logo=python&logoColor=white" alt="Python">
@@ -21,7 +17,7 @@
 
 | # | Component | What you get | Formats |
 |:-:|---|---|---|
-| 1 | [**Unit-wise Lecture Notes**](01_Unit_Notes) | 5 units, definition / example / pitfall boxes, TikZ diagrams, worked examples, summaries | `LaTeX` · `PDF` |
+| 1 | [**Unit-wise Lecture Notes**](01_Unit_Notes) | 5 units, definition / example / pitfall boxes, TikZ diagrams, worked examples, summaries | `PDF` |
 | 2 | [**Animated PowerPoint Decks**](02_PPT) | 5 decks (~15 slides each), fade/wipe/zoom entrance animations, native charts, speaker notes | `PPTX` · `PDF` |
 | 3 | [**BTL Question Bank**](03_Question_Bank) | **30 questions per unit** (150 total), 5 at each Bloom's level L1–L6, CO- and marks-mapped | `LaTeX` · `PDF` · `MD` |
 | 4 | [**Project Portfolio**](04_Projects) | **10 projects per unit** (50 total), mini and major, with tools, deliverables and a rubric | `LaTeX` · `PDF` · `MD` |
@@ -198,11 +194,3 @@ Requirements for the full rebuild: XeLaTeX (TeX Live with `tcolorbox`, `tikz` an
 - [Artificial Intelligence — Prof. P. Dasgupta, IIT Kharagpur](https://archive.nptel.ac.in/courses/106/105/106105079/)
 
 ---
-
-## 👨‍🏫 Course faculty
-
-**Dr. S. Satyanarayana**, Ph.D., PDF (AI)<br>
-Professor &amp; Advisor, AI &amp; Data Science, Sanjivani University, Kopargaon<br>
-[ORCID](https://orcid.org/0000-0001-8285-113X) · [Google Scholar](https://scholar.google.com/citations?user=4Oo8gqoAAAAJ) · [GitHub](https://github.com/drssnaiml1-cell)
-
-<p align="center"><sub>© 2026 Dr. S. Satyanarayana · Course material for academic use · Academic Year 2026–27</sub></p>
