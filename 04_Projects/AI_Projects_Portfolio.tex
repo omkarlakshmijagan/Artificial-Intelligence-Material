@@ -1,0 +1,327 @@
+\documentclass[11pt]{article}
+\usepackage{../common/ai204}
+\renewcommand{\doctitle}{Project Portfolio}
+\begin{document}
+\aicover{Project Portfolio}{50 unit-aligned mini and major projects \textbullet\ 10 per unit}{Problem \textbullet\ Tools \textbullet\ Deliverables \textbullet\ CO \& BTL mapping \textbullet\ Rubric}
+\section*{Project Guidelines}
+\begin{itemize}\item \textbf{Mini projects} (individual, 2 weeks): one algorithm, one dataset/simulation, a short report.
+\item \textbf{Major projects} (teams of 3--4, 6 weeks): working system, demo video, GitHub repository, IEEE-format report.
+\item Every project must include a \emph{README}, a requirements file, reproducible notebooks and a responsible-AI note.\end{itemize}
+\begin{center}\begin{tabular}{lp{9cm}c}\rowcolor{navy}\textcolor{gold}{\textbf{Criterion}}&\textcolor{gold}{\textbf{Description}}&\textcolor{gold}{\textbf{Marks}}\\
+Problem formulation&Clear PEAS / state space / model specification&15\\
+\rowcolor{ivory}Algorithm \& implementation&Correct, efficient, well-structured code&30\\
+Experiments \& analysis&Baselines, metrics, plots and interpretation&25\\
+\rowcolor{ivory}Presentation \& demo&Demo, viva, clarity of explanation&15\\
+Documentation \& ethics&README, report, responsible-AI reflection&15\\\midrule
+\textbf{Total}&&\textbf{100}\\\end{tabular}\end{center}\newpage
+\unitbanner{I}{Projects: Introduction to AI and Intelligent Agents}{10 Projects \textbullet\ CO204.1}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.01\quad Smart Campus PEAS Designer}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Build a web form that takes any agent idea and generates its PEAS table and seven-property environment classification with explanations.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Streamlit\qquad \textbf{\color{navy}Deliverables:} App, 10 sample agents, report\\[2pt]
+\co{CO204.1}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.02\quad Vacuum-World Agent Simulator}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Simulate simple-reflex, model-based and random agents in an n$\times$n vacuum world and compare performance scores over 1000 runs.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, NumPy, Matplotlib\qquad \textbf{\color{navy}Deliverables:} Simulator, comparison plots\\[2pt]
+\co{CO204.1}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.03\quad Water-Jug State-Space Visualiser}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Generate and draw the full reachable state graph for arbitrary jug capacities and highlight the shortest solution.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, NetworkX\qquad \textbf{\color{navy}Deliverables:} Graph images, GIF of path\\[2pt]
+\co{CO204.1}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.04\quad Turing Test Chat Arena}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Run a blinded Turing-style experiment: students chat with a human or an LLM and guess which; analyse detection accuracy.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Flask, any LLM API\qquad \textbf{\color{navy}Deliverables:} Web app, experiment report, statistics\\[2pt]
+\co{CO204.1}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.05\quad AI Timeline Explorer}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Interactive timeline of AI history (1943--today) with filters by era, approach and application.\\[2pt]
+\textbf{\color{navy}Tools / Data:} HTML/JS, D3 or Plotly\qquad \textbf{\color{navy}Deliverables:} Hosted page, dataset CSV\\[2pt]
+\co{CO204.1}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.06\quad Traffic-Signal Reflex vs Model Agent}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Simulate a 4-way junction; compare a fixed-timer reflex agent with a model-based agent that counts queues.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, SimPy / Pygame\qquad \textbf{\color{navy}Deliverables:} Simulation, average wait-time analysis\\[2pt]
+\co{CO204.1}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.07\quad 8-Puzzle Problem Formulator}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Generate random solvable 8-puzzle states, check solvability by inversion parity and export as search problems.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Library, unit tests\\[2pt]
+\co{CO204.1}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.08\quad Agent Architecture Playground}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Implement all five agent types for the Wumpus-lite grid and visualise their decision process step by step.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Pygame\qquad \textbf{\color{navy}Deliverables:} Game, demo video, report\\[2pt]
+\co{CO204.1}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.09\quad Missionaries and Cannibals Solver}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Formulate and solve M\&C with BFS; animate the boat crossings.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Matplotlib animation\qquad \textbf{\color{navy}Deliverables:} Solver, animated GIF\\[2pt]
+\co{CO204.1}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PI.10\quad AI Applications Survey Dashboard}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Survey 50 Indian AI applications (agri, health, fintech) and classify by agent type and environment.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Pandas, Plotly\qquad \textbf{\color{navy}Deliverables:} Dashboard, survey dataset\\[2pt]
+\co{CO204.1}\ \btl{L3/L4}
+\end{tcolorbox}
+\newpage
+\unitbanner{II}{Projects: Problem Solving by Search}{10 Projects \textbullet\ CO204.2}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.01\quad Pathfinding Visualiser}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Grid-based visualiser for BFS, DFS, UCS, Greedy and A* with walls, weights and step-by-step animation.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Pygame or JS Canvas\qquad \textbf{\color{navy}Deliverables:} App, benchmark table\\[2pt]
+\co{CO204.2}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.02\quad Pune Metro Route Planner}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Model Pune/Mumbai metro stations as a graph and find shortest-time routes with UCS and A*.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, NetworkX, Folium\qquad \textbf{\color{navy}Deliverables:} Route planner, map output\\[2pt]
+\co{CO204.2}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.03\quad Sudoku Solver with AC-3}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Solve Sudoku using backtracking + MRV + AC-3; compare node counts with plain backtracking.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Solver, performance chart\\[2pt]
+\co{CO204.2}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.04\quad Unbeatable Tic-Tac-Toe}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Minimax with alpha--beta and a GUI; log nodes searched with and without pruning.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Tkinter\qquad \textbf{\color{navy}Deliverables:} Game, pruning statistics\\[2pt]
+\co{CO204.2}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.05\quad Connect-Four AI}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Depth-limited alpha--beta with a heuristic evaluation function; tune weights by self-play.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, NumPy\qquad \textbf{\color{navy}Deliverables:} Game, evaluation study\\[2pt]
+\co{CO204.2}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.06\quad N-Queens: Hill Climbing vs SA vs GA}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Compare success rate and time of three local-search methods for n = 8\dots{}64.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Matplotlib\qquad \textbf{\color{navy}Deliverables:} Experiment notebook, plots\\[2pt]
+\co{CO204.2}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.07\quad Exam Timetable CSP}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Schedule exams with room capacity and no-clash constraints using CSP techniques.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, OR-Tools (optional)\qquad \textbf{\color{navy}Deliverables:} Timetable generator, report\\[2pt]
+\co{CO204.2}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.08\quad TSP with Genetic Algorithm}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Optimise a tour through 30 Indian cities; animate the best tour each generation.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Matplotlib\qquad \textbf{\color{navy}Deliverables:} GIF, convergence curve\\[2pt]
+\co{CO204.2}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.09\quad 8-Puzzle Heuristic Study}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Measure effective branching factor of IDS, A*(h1), A*(h2) and a pattern-database heuristic.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Results table, analysis\\[2pt]
+\co{CO204.2}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PII.10\quad Map-Colouring of Indian States}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Colour the map of Indian states with minimum colours using backtracking with forward checking.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, GeoPandas\qquad \textbf{\color{navy}Deliverables:} Coloured map image\\[2pt]
+\co{CO204.2}\ \btl{L3/L4}
+\end{tcolorbox}
+\newpage
+\unitbanner{III}{Projects: Knowledge Representation and Reasoning}{10 Projects \textbullet\ CO204.3}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.01\quad Family Tree Reasoner in Prolog}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Encode a 4-generation family and answer grandparent, cousin, uncle queries.\\[2pt]
+\textbf{\color{navy}Tools / Data:} SWI-Prolog / PySwip\qquad \textbf{\color{navy}Deliverables:} KB, query log\\[2pt]
+\co{CO204.3}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.02\quad Propositional Logic Toolkit}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Parse formulas, build truth tables, check validity/satisfiability and convert to CNF.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Library, CLI, tests\\[2pt]
+\co{CO204.3}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.03\quad Resolution Theorem Prover}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Implement FOL resolution with unification and occurs check; prove classic textbook problems.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Prover, proof traces\\[2pt]
+\co{CO204.3}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.04\quad Wumpus World Logical Agent}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} A KB agent that infers safe squares using propositional inference and explores the cave.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Pygame\qquad \textbf{\color{navy}Deliverables:} Agent, visual demo\\[2pt]
+\co{CO204.3}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.05\quad Forward-Chaining Rule Engine}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Generic forward-chaining engine with conflict resolution strategies and explanation trace.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Engine, sample KBs\\[2pt]
+\co{CO204.3}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.06\quad Department Ontology}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Build an OWL ontology for the AI\&DS department and query it with SPARQL.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Protégé, rdflib\qquad \textbf{\color{navy}Deliverables:} OWL file, SPARQL queries\\[2pt]
+\co{CO204.3}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.07\quad Semantic Network Visualiser}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Draw a semantic network from triples and support inheritance-based queries.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, NetworkX\qquad \textbf{\color{navy}Deliverables:} Tool, examples\\[2pt]
+\co{CO204.3}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.08\quad Course Prerequisite Advisor}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Backward-chaining advisor that tells a student whether they can register for a course.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Prolog or Python\qquad \textbf{\color{navy}Deliverables:} Advisor, test cases\\[2pt]
+\co{CO204.3}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.09\quad English-to-FOL Helper}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Use pattern rules (and optionally an LLM) to translate simple English sentences into FOL, with validation.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, spaCy\qquad \textbf{\color{navy}Deliverables:} Tool, accuracy evaluation\\[2pt]
+\co{CO204.3}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIII.10\quad Legal Rules Knowledge Base}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Encode a small set of Indian traffic rules and infer penalties for given scenarios.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python / Prolog\qquad \textbf{\color{navy}Deliverables:} KB, scenario report\\[2pt]
+\co{CO204.3}\ \btl{L3/L4}
+\end{tcolorbox}
+\newpage
+\unitbanner{IV}{Projects: Planning and Reasoning under Uncertainty}{10 Projects \textbullet\ CO204.4}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.01\quad Blocks-World STRIPS Planner}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Forward and backward STRIPS planners with a visual of each plan step.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Planner, animation\\[2pt]
+\co{CO204.4}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.02\quad PDDL Robot Delivery}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Model a campus delivery robot in PDDL and solve using an off-the-shelf planner.\\[2pt]
+\textbf{\color{navy}Tools / Data:} PDDL, Fast Downward / pyperplan\qquad \textbf{\color{navy}Deliverables:} Domain \& problem files, plans\\[2pt]
+\co{CO204.4}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.03\quad Medical Diagnosis Bayesian Network}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Build a BN for respiratory illnesses, perform inference and sensitivity analysis.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, pgmpy\qquad \textbf{\color{navy}Deliverables:} Model, inference report\\[2pt]
+\co{CO204.4}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.04\quad Na\"{i}ve Bayes SMS Spam Filter}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Implement Na\"{i}ve Bayes from scratch on the SMS Spam Collection; compare with scikit-learn.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, scikit-learn\qquad \textbf{\color{navy}Deliverables:} Notebook, metrics\\[2pt]
+\co{CO204.4}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.05\quad Bayes' Theorem Visual Calculator}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Interactive tool showing how prior, sensitivity and specificity change the posterior.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Streamlit / HTML\qquad \textbf{\color{navy}Deliverables:} App\\[2pt]
+\co{CO204.4}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.06\quad Fuzzy Washing-Machine Controller}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Mamdani controller with dirt and load inputs; plot the control surface.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, scikit-fuzzy\qquad \textbf{\color{navy}Deliverables:} Controller, 3D surface\\[2pt]
+\co{CO204.4}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.07\quad Fuzzy Traffic-Signal Timing}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Fuzzy controller that sets green time from queue length and arrival rate; simulate against fixed timing.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, scikit-fuzzy, SimPy\qquad \textbf{\color{navy}Deliverables:} Simulation, comparison\\[2pt]
+\co{CO204.4}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.08\quad Partial-Order Planner}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Implement POP with causal links and threat resolution; solve shoe-sock and tea-making domains.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Planner, plan graphs\\[2pt]
+\co{CO204.4}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.09\quad Monte-Carlo Bayesian Inference}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Compare enumeration, rejection sampling and likelihood weighting on the burglary network.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python\qquad \textbf{\color{navy}Deliverables:} Convergence plots\\[2pt]
+\co{CO204.4}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PIV.10\quad Crop Irrigation Fuzzy Advisor}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Fuzzy system using soil moisture and temperature to recommend irrigation duration for farmers.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, scikit-fuzzy\qquad \textbf{\color{navy}Deliverables:} Advisor, rule base\\[2pt]
+\co{CO204.4}\ \btl{L3/L4}
+\end{tcolorbox}
+\newpage
+\unitbanner{V}{Projects: Learning, Expert Systems and Applications of AI}{10 Projects \textbullet\ CO204.5}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.01\quad Decision Tree from Scratch}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Implement ID3 with entropy/information gain, visualise the tree and extract rules.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Graphviz\qquad \textbf{\color{navy}Deliverables:} Library, Play-Tennis demo\\[2pt]
+\co{CO204.5}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.02\quad Student Placement Predictor}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Predict placement from academic features with decision trees; explain predictions and audit bias.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, scikit-learn, SHAP\qquad \textbf{\color{navy}Deliverables:} Model, fairness report\\[2pt]
+\co{CO204.5}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.03\quad Perceptron Playground}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Animate perceptron learning on AND/OR/XOR and show why XOR fails; add a 2-layer MLP.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Matplotlib animation\qquad \textbf{\color{navy}Deliverables:} GIFs, notebook\\[2pt]
+\co{CO204.5}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.04\quad Crop Disease Expert System}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Rule-based expert system with certainty factors and explanation for common Maharashtra crops.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python / CLIPS (clipspy)\qquad \textbf{\color{navy}Deliverables:} Expert system, consultation logs\\[2pt]
+\co{CO204.5}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.05\quad College Admission Chatbot}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Intent-matching chatbot answering admission FAQs with fallback and logging.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, NLTK / Rasa\qquad \textbf{\color{navy}Deliverables:} Chatbot, evaluation\\[2pt]
+\co{CO204.5}\ \btl{L6}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.06\quad Handwritten Digit Recogniser}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Train a simple neural network on MNIST and deploy a drawing canvas for live prediction.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, PyTorch / Keras\qquad \textbf{\color{navy}Deliverables:} App, accuracy report\\[2pt]
+\co{CO204.5}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.07\quad Sentiment Analyser for Reviews}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Classify product reviews (English/Marathi-English) with Na\"{i}ve Bayes and a small neural net.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, scikit-learn\qquad \textbf{\color{navy}Deliverables:} Notebook, confusion matrix\\[2pt]
+\co{CO204.5}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.08\quad Line-Following Robot Simulator}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Simulate a robot with sensors and a rule-based controller; extend with a learned controller.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Pygame\qquad \textbf{\color{navy}Deliverables:} Simulator, demo\\[2pt]
+\co{CO204.5}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=teal,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.09\quad Q-Learning Grid World}\hfill \colorbox{white}{\textcolor{teal}{\scriptsize\bfseries MINI}}},fonttitle=\color{white},colbacktitle=teal]
+\textbf{\color{navy}Problem:} Reinforcement learning agent learning to reach a goal; plot reward curves and learned policy.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, NumPy\qquad \textbf{\color{navy}Deliverables:} Notebook, policy heat-map\\[2pt]
+\co{CO204.5}\ \btl{L3/L4}
+\end{tcolorbox}
+\begin{tcolorbox}[enhanced,breakable,colback=white,colframe=crimson,arc=2mm,boxrule=0.9pt,
+  title={\textbf{PV.10\quad Responsible-AI Audit Toolkit}\hfill \colorbox{white}{\textcolor{crimson}{\scriptsize\bfseries MAJOR}}},fonttitle=\color{white},colbacktitle=crimson]
+\textbf{\color{navy}Problem:} Audit a trained classifier for bias, robustness and explainability; produce a model card.\\[2pt]
+\textbf{\color{navy}Tools / Data:} Python, Fairlearn, SHAP\qquad \textbf{\color{navy}Deliverables:} Toolkit, model card\\[2pt]
+\co{CO204.5}\ \btl{L6}
+\end{tcolorbox}
+\newpage
+\end{document}

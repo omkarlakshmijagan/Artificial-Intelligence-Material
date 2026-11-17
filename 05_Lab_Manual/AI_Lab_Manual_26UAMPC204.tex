@@ -1,0 +1,1603 @@
+\documentclass[11pt]{article}
+\usepackage{../common/ai204}
+\usepackage{animate}
+\renewcommand{\doctitle}{Laboratory Manual}
+\begin{document}
+\aicover{Laboratory Manual}{10 experiments \textbullet\ Python 3 \textbullet\ executed Jupyter notebooks with outputs \textbullet\ animated algorithm visualisations}{For DSY -- AI \& ML students \textbullet\ Integrated Theory + Practical (2-0-2)}
+\section*{Certificate}
+\begin{tcolorbox}[enhanced,colback=ivory,colframe=gold,boxrule=1.2pt,arc=3mm,left=8mm,right=8mm,top=6mm,bottom=6mm]
+\large This is to certify that Mr./Ms.\ \rule{7cm}{0.4pt}\ Roll No.\ \rule{2.5cm}{0.4pt}\ of class \rule{3cm}{0.4pt}\ has satisfactorily completed the experiments in \textbf{26UAMPC204 Artificial Intelligence Laboratory} during the academic year 2026--27.\\[3cm]
+\rule{4.5cm}{0.4pt}\hfill\rule{4.5cm}{0.4pt}\hfill\rule{4.5cm}{0.4pt}\\ Course Faculty\hfill Head of Department\hfill External Examiner
+\end{tcolorbox}
+\section*{Laboratory Instructions}
+\begin{itemize}\item Install Python 3.10+ and run \texttt{pip install -r requirements.txt} from the repository root.
+\item Open each notebook in Jupyter or VS Code, run all cells, and compare your output with the output printed in this manual.
+\item Write the aim, algorithm, program, output and result in your journal; attach the printed figures.
+\item Each experiment carries 10 marks: performance 4, journal 3, viva 3.
+\item Animations play inside this PDF in Adobe Acrobat Reader; GIF versions are in \texttt{assets/animations}.\end{itemize}
+\section*{Index of Experiments}
+\begin{center}\begin{tabular}{c p{8.6cm} c c p{1.6cm} p{1.6cm}}
+\rowcolor{navy}\textcolor{gold}{\textbf{No.}}&\textcolor{gold}{\textbf{Title}}&\textcolor{gold}{\textbf{CO}}&\textcolor{gold}{\textbf{Page}}&\textcolor{gold}{\textbf{Date}}&\textcolor{gold}{\textbf{Sign}}\\
+1&Uninformed Search --- BFS and DFS&CO204.1&\pageref{exp1}&&\\
+\rowcolor{ivory}2&A* Search with Admissible Heuristics&CO204.2&\pageref{exp2}&&\\
+3&Hill Climbing and Greedy Best-First Search&CO204.2&\pageref{exp3}&&\\
+\rowcolor{ivory}4&Game Playing --- Minimax with Alpha--Beta Pruning&CO204.2&\pageref{exp4}&&\\
+5&Constraint Satisfaction --- N-Queens, Map Colouring and Sudoku&CO204.2&\pageref{exp5}&&\\
+\rowcolor{ivory}6&Facts, Rules and Logical Inference&CO204.3&\pageref{exp6}&&\\
+7&Unification and Resolution in First-Order Logic&CO204.3&\pageref{exp7}&&\\
+\rowcolor{ivory}8&Bayes' Theorem and a Bayesian Network for Diagnosis&CO204.4&\pageref{exp8}&&\\
+9&Decision-Tree Classifier and Rule Extraction&CO204.5&\pageref{exp9}&&\\
+\rowcolor{ivory}10&Rule-Based Expert System and a Basic Chatbot (Mini-Project)&CO204.5&\pageref{exp10}&&\\
+\end{tabular}\end{center}
+\section*{Course Outcomes}
+\begin{tabularx}{\linewidth}{>{\bfseries\color{navy}}l X}\toprule
+CO204.1&Explain the foundations of AI and intelligent agents and formulate problems as state-space search.\\
+CO204.2&Apply uninformed, informed, local and adversarial search, and constraint satisfaction.\\
+CO204.3&Represent knowledge and perform inference in propositional and first-order logic.\\
+CO204.4&Apply classical planning and reasoning under uncertainty (probability, Bayesian networks, fuzzy logic).\\
+CO204.5&Illustrate learning, expert systems and applications of AI with awareness of ethical issues.\\\bottomrule
+\end{tabularx}
+\newpage
+\section*{Experiment 1: Uninformed Search --- BFS and DFS}\label{exp1}
+\noindent\co{CO204.1}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Implement Breadth-First Search and Depth-First Search to solve the Water-Jug problem and the 8-puzzle, and compare nodes expanded, path length and memory.\end{keypoint}
+\subsection*{Theory}
+\textbf{State space.} A problem is defined by an initial state, actions, a transition model, a goal test and path cost.
+
+\textbf{BFS} expands the shallowest node first using a FIFO queue --- complete and optimal for unit costs, but needs $O(b^d)$ memory.
+
+\textbf{DFS} expands the deepest node first using a LIFO stack --- needs only $O(bm)$ memory but is neither complete (in infinite spaces) nor optimal.
+
+\textbf{Water-Jug (4 L, 3 L):} state $(x,y)$; actions fill, empty and pour; goal $x=2$.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item Put the start node in the frontier (queue for BFS / stack for DFS) and mark it reached.
+\item Pop a node; if it satisfies the goal test, reconstruct the path through parent links.
+\item Otherwise generate successors; push every successor not yet reached and record its parent.
+\item Repeat until the goal is found or the frontier is empty.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp01\_BFS\_DFS\_WaterJug\_8Puzzle.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp01\_BFS\_DFS\_WaterJug\_8Puzzle.py}}
+\begin{lstlisting}[style=py]
+from collections import deque
+
+CAP = (4, 3)            # jug capacities
+START, GOAL_X = (0, 0), 2
+
+def successors(s):
+    x, y = s; A, B = CAP
+    moves = {
+        "Fill 4L":  (A, y), "Fill 3L": (x, B),
+        "Empty 4L": (0, y), "Empty 3L": (x, 0),
+        "Pour 4->3": (x - min(x, B - y), y + min(x, B - y)),
+        "Pour 3->4": (x + min(y, A - x), y - min(y, A - x)),
+    }
+    return [(a, n) for a, n in moves.items() if n != s]
+
+def is_goal(s): return s[0] == GOAL_X
+print("Successors of (0,0):", successors((0, 0)))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Successors of (0,0): [('Fill 4L', (4, 0)), ('Fill 3L', (0, 3))]
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+def search(start, succ, goal, strategy="BFS", limit=10**6):
+    frontier = deque([start]); parent = {start: (None, None)}
+    order, max_frontier = [], 1
+    while frontier:
+        s = frontier.popleft() if strategy == "BFS" else frontier.pop()
+        order.append(s)
+        if goal(s):
+            path, acts = [s], []
+            while parent[path[-1]][0] is not None:
+                p, a = parent[path[-1]]; acts.append(a); path.append(p)
+            return path[::-1], acts[::-1], order, max_frontier
+        for a, n in succ(s):
+            if n not in parent:
+                parent[n] = (s, a); frontier.append(n)
+        max_frontier = max(max_frontier, len(frontier))
+        if len(order) > limit: break
+    return None, None, order, max_frontier
+
+for strat in ("BFS", "DFS"):
+    path, acts, order, mf = search(START, successors, is_goal, strat)
+    print(f"\n{strat}: path length = {len(path)-1}, nodes expanded = {len(order)}, max frontier = {mf}")
+    for s, a in zip(path, ["Start"] + acts):
+        print(f"   {a:<9} -> {s}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+BFS: path length = 6, nodes expanded = 13, max frontier = 3
+   Start     -> (0, 0)
+   Fill 4L   -> (4, 0)
+   Pour 4->3  -> (1, 3)
+   Empty 3L  -> (1, 0)
+   Pour 4->3  -> (0, 1)
+   Fill 4L   -> (4, 1)
+   Pour 4->3  -> (2, 3)
+
+DFS: path length = 6, nodes expanded = 7, max frontier = 3
+   Start     -> (0, 0)
+   Fill 3L   -> (0, 3)
+   Pour 3->4  -> (3, 0)
+   Fill 3L   -> (3, 3)
+   Pour 3->4  -> (4, 2)
+   Empty 4L  -> (0, 2)
+   Pour 3->4  -> (2, 0)
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import networkx as nx
+G = nx.DiGraph()
+for x in range(5):
+    for y in range(4):
+        for a, n in successors((x, y)): G.add_edge((x, y), n)
+reach = nx.descendants(G, START) | {START}
+H = G.subgraph(reach)
+pos = {n: (n[0] * 1.4, n[1] * 1.2) for n in H.nodes}
+_, _, bfs_order, _ = search(START, successors, is_goal, "BFS")
+
+fig, ax = plt.subplots(figsize=(7.5, 5))
+def frame(k):
+    ax.clear(); seen = set(bfs_order[:k + 1])
+    cols = [GOLD if n == bfs_order[k] else (TEAL if n in seen else MIST) for n in H.nodes]
+    nx.draw_networkx_edges(H, pos, ax=ax, edge_color="#C8D0DC", arrows=True, arrowsize=8, width=0.8)
+    nx.draw_networkx_nodes(H, pos, ax=ax, node_color=cols, edgecolors=NAVY, node_size=900)
+    nx.draw_networkx_labels(H, pos, ax=ax, labels={n: f"{n[0]},{n[1]}" for n in H.nodes}, font_size=9, font_family="serif")
+    ax.set_title(f"BFS step {k+1}: expanding {bfs_order[k]}", color=NAVY); ax.axis("off")
+anim = animation.FuncAnimation(fig, frame, frames=len(bfs_order))
+gif = save_gif(anim, "exp01_bfs_waterjug.gif", fps=1.5)
+display(Image(filename=gif))
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+GOAL8 = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+def succ8(s):
+    i = s.index(0); r, c = divmod(i, 3); out = []
+    for a, dr, dc in (("Up", -1, 0), ("Down", 1, 0), ("Left", 0, -1), ("Right", 0, 1)):
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < 3 and 0 <= nc < 3:
+            j = nr * 3 + nc; t = list(s); t[i], t[j] = t[j], t[i]; out.append((a, tuple(t)))
+    return out
+rng8 = np.random.default_rng(11); start8, prev = GOAL8, None
+for _ in range(9):                     # scramble the goal with 9 random non-reversing moves
+    opts = [n for a, n in succ8(start8) if n != prev]; prev, start8 = start8, opts[rng8.integers(len(opts))]
+print("Start state:", start8)
+p, a, o, mf = search(start8, succ8, lambda s: s == GOAL8, "BFS")
+print("BFS  : moves =", a, "| expanded =", len(o), "| max frontier =", mf)
+p2, a2, o2, mf2 = search(start8, succ8, lambda s: s == GOAL8, "DFS", limit=20000)
+print("DFS  :", "gave up after" if p2 is None else f"path length {len(p2)-1},", f"{len(o2):,} expansions (DFS wanders deep -- not optimal)")
+
+def show(s, ax, title):
+    ax.imshow(np.zeros((3, 3)), cmap="Greys", vmin=0, vmax=1)
+    for k, v in enumerate(s):
+        r, c = divmod(k, 3)
+        ax.add_patch(plt.Rectangle((c - .45, r - .45), .9, .9, color=NAVY if v else "white", ec=GOLD, lw=2))
+        if v: ax.text(c, r, v, ha="center", va="center", color=GOLD, fontsize=20, weight="bold")
+    ax.set_title(title, fontsize=11); ax.axis("off")
+fig, axs = plt.subplots(1, len(p), figsize=(2.1 * len(p), 2.4))
+for ax, s, t in zip(axs, p, ["Start"] + a): show(s, ax, t)
+plt.tight_layout(); plt.savefig(f"{FIG}/exp01_8puzzle_path.png", dpi=130); plt.show()
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Start state: (4, 1, 2, 7, 5, 0, 8, 6, 3)
+BFS  : moves = ['Down', 'Left', 'Left', 'Up', 'Up', 'Right', 'Right', 'Down', 'Down'] | expanded = 390 | 
+DFS  : path length 319, 326 expansions (DFS wanders deep -- not optimal)
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import pandas as pd
+rows = []
+for strat in ("BFS", "DFS"):
+    pth, _, od, mfr = search(START, successors, is_goal, strat)
+    rows.append([strat, len(pth) - 1, len(od), mfr])
+df = pd.DataFrame(rows, columns=["Strategy", "Path length", "Nodes expanded", "Max frontier"])
+print(df.to_string(index=False))
+ax = df.set_index("Strategy")[["Path length", "Nodes expanded", "Max frontier"]].plot.bar(color=[NAVY, GOLD, TEAL], figsize=(6, 3.5), rot=0)
+ax.set_title("Water-Jug: BFS vs DFS"); plt.tight_layout(); plt.savefig(f"{FIG}/exp01_compare.png", dpi=130); plt.show()
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Strategy  Path length  Nodes expanded  Max frontier
+     BFS            6              13             3
+     DFS            6               7             3
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp01_bfs_waterjug/f-}{0}{12}\\
+{\small\color{slate}\textbf{Animation} (13 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp01\_bfs\_waterjug.gif}}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp01_8puzzle_path.png}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp01_compare.png}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]Both strategies solved the Water-Jug problem in 6 moves, but only BFS guarantees the shortest solution. On the scrambled 8-puzzle BFS found the optimal path while DFS wandered thousands of nodes deep without returning a short solution. BFS suits shallow solutions; DFS suits tight memory.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item Why is BFS optimal only when all step costs are equal?
+\item What is the space complexity of DFS and why is it smaller than BFS?
+\item How do you detect that an 8-puzzle state is unsolvable?
+\item What is the difference between tree search and graph search?
+\item Why does the Water-Jug state graph contain cycles?
+\end{enumerate}
+\newpage
+\section*{Experiment 2: A* Search with Admissible Heuristics}\label{exp2}
+\noindent\co{CO204.2}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Implement A* search with admissible heuristics for the 8-puzzle (misplaced tiles, Manhattan distance) and for a grid shortest-route problem, and compare with uniform-cost search.\end{keypoint}
+\subsection*{Theory}
+A* expands the node with the smallest $f(n)=g(n)+h(n)$. If $h$ is \textbf{admissible} ($h\le h^*$) tree-A* is optimal; if $h$ is \textbf{consistent} graph-A* is optimal.
+
+For the 8-puzzle, $h_1$ = misplaced tiles and $h_2$ = Manhattan distance; $h_2$ dominates $h_1$, so it expands fewer nodes. With $h=0$, A* reduces to uniform-cost search.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item Insert start with g = 0 and f = h(start) into a priority queue.
+\item Pop the node with the lowest f; if it is the goal, return the path.
+\item For each successor compute g' = g + step cost; if g' improves the best known g, record parent and push with f = g' + h.
+\item Repeat until goal popped or queue empty.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp02\_AStar\_8Puzzle\_Route.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp02\_AStar\_8Puzzle\_Route.py}}
+\begin{lstlisting}[style=py]
+import heapq, itertools, time
+GOAL8 = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+def succ8(s):
+    i = s.index(0); r, c = divmod(i, 3)
+    for a, dr, dc in (("Up", -1, 0), ("Down", 1, 0), ("Left", 0, -1), ("Right", 0, 1)):
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < 3 and 0 <= nc < 3:
+            j = nr * 3 + nc; t = list(s); t[i], t[j] = t[j], t[i]; yield a, tuple(t), 1
+
+def h0(s): return 0
+def h1(s): return sum(1 for k, v in enumerate(s) if v and v != GOAL8[k])
+def h2(s):
+    d = 0
+    for k, v in enumerate(s):
+        if v: gr, gc = divmod(v - 1, 3); r, c = divmod(k, 3); d += abs(r - gr) + abs(c - gc)
+    return d
+
+def astar(start, succ, goal, h):
+    tie = itertools.count(); frontier = [(h(start), next(tie), start)]
+    g = {start: 0}; parent = {start: None}; expanded = 0
+    while frontier:
+        f, _, s = heapq.heappop(frontier)
+        if f > g[s] + h(s): continue
+        expanded += 1
+        if goal(s):
+            path = [s]
+            while parent[path[-1]]: path.append(parent[path[-1]][0])
+            return path[::-1], g[s], expanded
+        for a, n, c in succ(s):
+            ng = g[s] + c
+            if ng < g.get(n, float("inf")):
+                g[n] = ng; parent[n] = (s, a); heapq.heappush(frontier, (ng + h(n), next(tie), n))
+    return None, None, expanded
+
+start = (7, 2, 4, 5, 0, 6, 8, 3, 1)   # Russell & Norvig Fig. 3.25 start state
+print("h1(start) =", h1(start), "  h2(start) =", h2(start))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+h1(start) = 6   h2(start) = 14
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import pandas as pd
+res = []
+for name, h in (("UCS (h=0)", h0), ("A* h1 misplaced", h1), ("A* h2 Manhattan", h2)):
+    t = time.time(); path, cost, exp = astar(start, succ8, lambda s: s == GOAL8, h)
+    res.append([name, cost, exp, round(time.time() - t, 2)])
+df = pd.DataFrame(res, columns=["Algorithm", "Solution cost", "Nodes expanded", "Time (s)"])
+print(df.to_string(index=False))
+fig, ax = plt.subplots(figsize=(6.5, 3.5))
+ax.barh(df["Algorithm"], df["Nodes expanded"], color=[SLATE, GOLD, NAVY]); ax.set_xscale("log")
+for i, v in enumerate(df["Nodes expanded"]): ax.text(v, i, f"  {v:,}", va="center", color=NAVY)
+ax.set_title("Nodes expanded (log scale) -- better heuristic, less work"); ax.invert_yaxis()
+plt.tight_layout(); plt.savefig(f"{FIG}/exp02_heuristics.png", dpi=130); plt.show()
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Algorithm  Solution cost  Nodes expanded  Time (s)
+      UCS (h=0)             20           55409      0.24
+A* h1 misplaced             20            3667      0.02
+A* h2 Manhattan             20             283      0.00
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+rng = np.random.default_rng(7)
+N = 20; grid = (rng.random((N, N)) < 0.25).astype(int)
+S, T = (0, 0), (N - 1, N - 1); grid[S] = grid[T] = 0
+def gsucc(p):
+    for dr, dc in ((1,0),(-1,0),(0,1),(0,-1)):
+        r, c = p[0] + dr, p[1] + dc
+        if 0 <= r < N and 0 <= c < N and not grid[r, c]: yield "m", (r, c), 1
+def manh(p): return abs(p[0] - T[0]) + abs(p[1] - T[1])
+
+def astar_trace(h):
+    tie = itertools.count(); fr = [(h(S), next(tie), S)]; g = {S: 0}; par = {S: None}; closed = []
+    while fr:
+        f, _, s = heapq.heappop(fr)
+        if s in closed: continue
+        closed.append(s)
+        if s == T: break
+        for _, n, c in gsucc(s):
+            if g[s] + c < g.get(n, 1e9): g[n] = g[s] + c; par[n] = s; heapq.heappush(fr, (g[n] + h(n), next(tie), n))
+    path = [T]
+    while par.get(path[-1]): path.append(par[path[-1]])
+    return closed, path[::-1]
+closed_a, path_a = astar_trace(manh)
+closed_u, path_u = astar_trace(lambda p: 0)
+print(f"A*  : expanded {len(closed_a)} cells, path length {len(path_a)-1}")
+print(f"UCS : expanded {len(closed_u)} cells, path length {len(path_u)-1}")
+
+fig, ax = plt.subplots(figsize=(5.5, 5.5))
+step = max(1, len(closed_a) // 30)
+frames = list(range(0, len(closed_a), step)) + [len(closed_a)] * 4
+def draw(k):
+    ax.clear(); img = np.ones((N, N, 3))
+    img[grid == 1] = matplotlib.colors.to_rgb(NAVY)
+    for (r, c) in closed_a[:k]: img[r, c] = matplotlib.colors.to_rgb(GOLDL)
+    if k >= len(closed_a):
+        for (r, c) in path_a: img[r, c] = matplotlib.colors.to_rgb(GOLD)
+    img[S] = matplotlib.colors.to_rgb(LEAF); img[T] = matplotlib.colors.to_rgb(CRIMSON)
+    ax.imshow(img); ax.set_xticks([]); ax.set_yticks([])
+    ax.set_title(f"A* (Manhattan): {min(k, len(closed_a))} cells expanded")
+gif = save_gif(animation.FuncAnimation(fig, draw, frames=frames), "exp02_astar_grid.gif", fps=4)
+display(Image(filename=gif))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+A*  : expanded 134 cells, path length 38
+UCS : expanded 287 cells, path length 38
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp02_astar_grid/f-}{0}{14}\\
+{\small\color{slate}\textbf{Animation} (15 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp02\_astar\_grid.gif}}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp02_heuristics.png}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]All three searches return the optimal 20-move 8-puzzle solution, but A* with Manhattan distance expands orders of magnitude fewer nodes than UCS. On the grid, A* explores far fewer cells than UCS while returning a path of the same optimal length.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item Prove that the Manhattan distance heuristic is admissible.
+\item What is meant by one heuristic dominating another?
+\item When does A* become uniform-cost search?
+\item What happens to A* if the heuristic overestimates?
+\item Define consistency and explain why it implies admissibility.
+\end{enumerate}
+\newpage
+\section*{Experiment 3: Hill Climbing and Greedy Best-First Search}\label{exp3}
+\noindent\co{CO204.2}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Implement steepest-ascent hill climbing (with random restarts) for the 8-queens problem and Greedy Best-First Search for a route problem; study local maxima and success rates.\end{keypoint}
+\subsection*{Theory}
+\textbf{Hill climbing} keeps one current state and moves to the best neighbour while it improves the objective. It can get stuck at \textbf{local maxima}, \textbf{plateaux} and \textbf{ridges}; \textbf{random restarts} make it complete with probability approaching 1.
+
+\textbf{Greedy Best-First Search} expands the node with the lowest $h(n)$ --- fast, but not optimal.
+
+For 8-queens, the objective counts attacking pairs $h$ (goal $h=0$).
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item Start from a random complete state.
+\item Evaluate all neighbours (move one queen within its column).
+\item If the best neighbour is not better than the current state, stop (local optimum).
+\item Otherwise move to it and repeat; on failure, restart from a new random state.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp03\_HillClimbing\_BestFirst.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp03\_HillClimbing\_BestFirst.py}}
+\begin{lstlisting}[style=py]
+rng = np.random.default_rng(42)
+def attacks(s):
+    n = len(s); return sum(1 for i in range(n) for j in range(i + 1, n) if s[i] == s[j] or abs(s[i] - s[j]) == j - i)
+def hill_climb(n=8, max_steps=100):
+    s = list(rng.integers(0, n, n)); trace = [s[:]]
+    for _ in range(max_steps):
+        cur = attacks(s); best, best_s = cur, None
+        for col in range(n):
+            for row in range(n):
+                if row != s[col]:
+                    t = s[:]; t[col] = row; v = attacks(t)
+                    if v < best: best, best_s = v, t
+        if best_s is None: break
+        s = best_s; trace.append(s[:])
+    return s, attacks(s), trace
+
+wins, steps = 0, []
+for trial in range(500):
+    s, h, tr = hill_climb()
+    wins += (h == 0); steps.append(len(tr) - 1)
+print(f"Steepest-ascent success rate on 8-queens: {wins/500:.1%} (textbook ~= 14%)   mean steps = {np.mean(steps):.1f}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Steepest-ascent success rate on 8-queens: 15.4% (textbook ~= 14%)   mean steps = 3.2
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+def restart_hc(n=8):
+    restarts = 0
+    while True:
+        s, h, tr = hill_climb(n)
+        if h == 0: return s, restarts, tr
+        restarts += 1
+sol, r, trace = restart_hc()
+sol = [int(v) for v in sol]; trace = [[int(v) for v in t] for t in trace]
+print("Solution:", sol, "found after", r, "random restarts;  attacking pairs =", attacks(sol))
+
+def board(ax, s, title):
+    n = len(s)
+    ax.imshow([[(i + j) % 2 for j in range(n)] for i in range(n)], cmap=matplotlib.colors.ListedColormap([MIST, "#C8D0DC"]))
+    for c, r in enumerate(s): ax.text(c, r, "Q", ha="center", va="center", fontsize=24, fontfamily="DejaVu Sans", color=NAVY if attacks(s) else LEAF)
+    ax.set_title(title); ax.set_xticks([]); ax.set_yticks([])
+fig, ax = plt.subplots(figsize=(4.5, 4.8))
+gif = save_gif(animation.FuncAnimation(fig, lambda k: (ax.clear(), board(ax, trace[min(k, len(trace)-1)], f"Step {min(k, len(trace)-1)}: h = {attacks(trace[min(k, len(trace)-1)])}")),
+                frames=len(trace) + 3), "exp03_hill_climbing_queens.gif", fps=1.5)
+display(Image(filename=gif))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Solution: [6, 0, 2, 7, 5, 3, 1, 4] found after 1 random restarts;  attacking pairs = 0
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+hs = [attacks(t) for t in trace]
+plt.figure(figsize=(6, 3.2)); plt.plot(hs, "-o", color=NAVY, mfc=GOLD, ms=8)
+plt.xlabel("step"); plt.ylabel("attacking pairs h"); plt.title("Hill climbing descends h to 0 (successful run)")
+plt.tight_layout(); plt.savefig(f"{FIG}/exp03_hc_curve.png", dpi=130); plt.show()
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+roads = {("Arad","Zerind"):75,("Arad","Sibiu"):140,("Arad","Timisoara"):118,("Zerind","Oradea"):71,("Oradea","Sibiu"):151,
+ ("Timisoara","Lugoj"):111,("Lugoj","Mehadia"):70,("Mehadia","Drobeta"):75,("Drobeta","Craiova"):120,("Craiova","Rimnicu"):146,
+ ("Craiova","Pitesti"):138,("Sibiu","Fagaras"):99,("Sibiu","Rimnicu"):80,("Rimnicu","Pitesti"):97,("Fagaras","Bucharest"):211,
+ ("Pitesti","Bucharest"):101,("Bucharest","Giurgiu"):90,("Bucharest","Urziceni"):85}
+G = {}
+for (a, b), d in roads.items(): G.setdefault(a, {})[b] = d; G.setdefault(b, {})[a] = d
+SLD = {"Arad":366,"Bucharest":0,"Craiova":160,"Drobeta":242,"Fagaras":176,"Giurgiu":77,"Lugoj":244,"Mehadia":241,
+       "Oradea":380,"Pitesti":100,"Rimnicu":193,"Sibiu":253,"Timisoara":329,"Urziceni":80,"Zerind":374}
+def best_first(start, goal, f):
+    import heapq
+    fr = [(f(start, 0), start, 0, [start])]; seen = set(); order = []
+    while fr:
+        _, n, g, path = heapq.heappop(fr)
+        if n in seen: continue
+        seen.add(n); order.append(n)
+        if n == goal: return path, g, order
+        for m, d in G[n].items(): heapq.heappush(fr, (f(m, g + d), m, g + d, path + [m]))
+gp, gc, go = best_first("Arad", "Bucharest", lambda n, g: SLD[n])
+ap, ac, ao = best_first("Arad", "Bucharest", lambda n, g: g + SLD[n])
+print("Greedy best-first:", " -> ".join(gp), f"= {gc} km   (expanded {len(go)})")
+print("A*               :", " -> ".join(ap), f"= {ac} km   (expanded {len(ao)})")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Greedy best-first: Arad -> Sibiu -> Fagaras -> Bucharest = 450 km   (expanded 4)
+A*               : Arad -> Sibiu -> Rimnicu -> Pitesti -> Bucharest = 418 km   (expanded 6)
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp03_hill_climbing_queens/f-}{0}{3}\\
+{\small\color{slate}\textbf{Animation} (4 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp03\_hill\_climbing\_queens.gif}}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp03_hc_curve.png}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]Plain steepest-ascent hill climbing solves only about one in seven 8-queens instances because it halts at local minima of h; random restarts always reach a solution. Greedy best-first reaches Bucharest quickly (450 km) but A* finds the optimal 418 km route.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item Why does hill climbing get stuck? Name three landscape features responsible.
+\item How does random-restart hill climbing achieve completeness?
+\item Why is greedy best-first search not optimal? Give the Romania counter-example.
+\item What is the difference between hill climbing and simulated annealing?
+\item What objective function did you use for 8-queens, and what is its maximum value?
+\end{enumerate}
+\newpage
+\section*{Experiment 4: Game Playing --- Minimax with Alpha--Beta Pruning}\label{exp4}
+\noindent\co{CO204.2}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Implement an unbeatable Tic-Tac-Toe player using Minimax and Alpha--Beta pruning, and measure how many nodes pruning saves.\end{keypoint}
+\subsection*{Theory}
+In a two-player zero-sum game, \textbf{Minimax} backs up utilities: MAX takes the maximum and MIN the minimum of child values.
+
+\textbf{Alpha--Beta} keeps $\alpha$ (best value for MAX) and $\beta$ (best value for MIN) and prunes a subtree as soon as $\alpha\ge\beta$. It returns exactly the same decision as Minimax; with perfect ordering, time drops from $O(b^m)$ to $O(b^{m/2})$.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item If the state is terminal, return its utility (+1 X wins, --1 O wins, 0 draw).
+\item MAX node: for each move, v = max(v, MIN-VALUE(child, $\alpha$, $\beta$)); if v $\ge$ $\beta$ prune; $\alpha$ = max($\alpha$, v).
+\item MIN node: for each move, v = min(v, MAX-VALUE(child, $\alpha$, $\beta$)); if v $\le$ $\alpha$ prune; $\beta$ = min($\beta$, v).
+\item At the root choose the move with the best backed-up value.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp04\_Minimax\_AlphaBeta\_TicTacToe.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp04\_Minimax\_AlphaBeta\_TicTacToe.py}}
+\begin{lstlisting}[style=py]
+import math
+LINES = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
+def winner(b):
+    for i, j, k in LINES:
+        if b[i] != " " and b[i] == b[j] == b[k]: return b[i]
+    return "D" if " " not in b else None
+def moves(b): return [i for i, v in enumerate(b) if v == " "]
+def play(b, i, p): t = list(b); t[i] = p; return "".join(t)
+def utility(w): return {"X": 1, "O": -1, "D": 0}[w]
+
+counter = {"n": 0}
+def minimax(b, player):
+    counter["n"] += 1; w = winner(b)
+    if w: return utility(w), None
+    best = (-math.inf, None) if player == "X" else (math.inf, None)
+    for m in moves(b):
+        v, _ = minimax(play(b, m, player), "O" if player == "X" else "X")
+        if (player == "X" and v > best[0]) or (player == "O" and v < best[0]): best = (v, m)
+    return best
+
+def alphabeta(b, player, a=-math.inf, be=math.inf):
+    counter["n"] += 1; w = winner(b)
+    if w: return utility(w), None
+    best_m = None
+    if player == "X":
+        v = -math.inf
+        for m in moves(b):
+            val, _ = alphabeta(play(b, m, "X"), "O", a, be)
+            if val > v: v, best_m = val, m
+            a = max(a, v)
+            if a >= be: break
+    else:
+        v = math.inf
+        for m in moves(b):
+            val, _ = alphabeta(play(b, m, "O"), "X", a, be)
+            if val < v: v, best_m = val, m
+            be = min(be, v)
+            if a >= be: break
+    return v, best_m
+
+empty = " " * 9
+counter["n"] = 0; v1, m1 = minimax(empty, "X"); n1 = counter["n"]
+counter["n"] = 0; v2, m2 = alphabeta(empty, "X"); n2 = counter["n"]
+print(f"Minimax    : value {v1}, best first move {m1}, nodes = {n1:,}")
+print(f"Alpha-Beta : value {v2}, best first move {m2}, nodes = {n2:,}")
+print(f"Pruning saved {100*(1-n2/n1):.1f}% of the nodes -- same decision, value 0 means perfect play is a draw.")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Minimax    : value 0, best first move 0, nodes = 549,946
+Alpha-Beta : value 0, best first move 0, nodes = 18,297
+Pruning saved 96.7% of the nodes -- same decision, value 0 means perfect play is a draw.
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+fig, ax = plt.subplots(figsize=(6, 3.4))
+ax.bar(["Minimax", "Alpha-Beta"], [n1, n2], color=[SLATE, GOLD], edgecolor=NAVY)
+for i, v in enumerate([n1, n2]): ax.text(i, v, f"{v:,}", ha="center", va="bottom", color=NAVY, weight="bold")
+ax.set_ylabel("nodes generated"); ax.set_title("Tic-Tac-Toe from the empty board")
+plt.tight_layout(); plt.savefig(f"{FIG}/exp04_nodes.png", dpi=130); plt.show()
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+b, p, history = empty, "X", [empty]
+while not winner(b):
+    _, m = alphabeta(b, p); b = play(b, m, p); history.append(b); p = "O" if p == "X" else "X"
+print("Final board:"); [print(" " + " | ".join(b[r*3:r*3+3])) for r in range(3)]
+print("Result:", {"D": "Draw", "X": "X wins", "O": "O wins"}[winner(b)])
+
+fig, ax = plt.subplots(figsize=(4, 4.3))
+def drawb(k):
+    s = history[min(k, len(history) - 1)]; ax.clear(); ax.set_xlim(0, 3); ax.set_ylim(0, 3); ax.set_aspect("equal"); ax.axis("off")
+    ax.add_patch(plt.Rectangle((0, 0), 3, 3, color=NAVY))
+    for t in (1, 2): ax.plot([t, t], [0, 3], color=GOLD, lw=3); ax.plot([0, 3], [t, t], color=GOLD, lw=3)
+    for i, v in enumerate(s):
+        if v != " ": ax.text(i % 3 + .5, 2.5 - i // 3, v, ha="center", va="center", fontsize=40, weight="bold", color="white" if v == "X" else GOLD)
+    ax.set_title(f"Move {min(k, len(history)-1)}")
+gif = save_gif(animation.FuncAnimation(fig, drawb, frames=len(history) + 2), "exp04_tictactoe_selfplay.gif", fps=1)
+display(Image(filename=gif))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Final board:
+ X | X | O
+ O | O | X
+ X | O | X
+Result: Draw
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp04_tictactoe_selfplay/f-}{0}{9}\\
+{\small\color{slate}\textbf{Animation} (10 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp04\_tictactoe\_selfplay.gif}}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp04_nodes.png}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]Minimax and Alpha--Beta choose the same optimal move and agree that perfect play leads to a draw, but Alpha--Beta generates only a small fraction of the nodes. Self-play between two optimal players ends in a draw.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item What are $\alpha$ and $\beta$ and when is a branch pruned?
+\item Does alpha--beta pruning ever change the Minimax decision? Why?
+\item How does move ordering affect the effectiveness of pruning?
+\item Why is full Minimax infeasible for chess?
+\item What is an evaluation function and when is it used?
+\end{enumerate}
+\newpage
+\section*{Experiment 5: Constraint Satisfaction --- N-Queens, Map Colouring and Sudoku}\label{exp5}
+\noindent\co{CO204.2}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Solve CSPs (N-Queens, map colouring of Australia and Sudoku) using backtracking search enhanced with MRV, forward checking and AC-3.\end{keypoint}
+\subsection*{Theory}
+A CSP is $\langle X,D,C\rangle$. \textbf{Backtracking} assigns one variable at a time and undoes an assignment when a variable has no legal value.
+
+Heuristics: \textbf{MRV} (choose the variable with fewest legal values), \textbf{LCV}, \textbf{forward checking}. \textbf{AC-3} enforces arc consistency by deleting unsupported values.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item If the assignment is complete, return it.
+\item Select an unassigned variable (MRV).
+\item For each value consistent with the assignment: assign it, run forward checking/AC-3, recurse.
+\item If recursion fails, undo the assignment and try the next value; if none remain, backtrack.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp05\_CSP\_NQueens\_MapColour\_Sudoku.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp05\_CSP\_NQueens\_MapColour\_Sudoku.py}}
+\begin{lstlisting}[style=py]
+def nqueens(n):
+    sol, trace, calls = [], [], [0]
+    def ok(col, row):
+        return all(r != row and abs(r - row) != col - c for c, r in enumerate(sol))
+    def bt(col):
+        calls[0] += 1
+        if col == n: return True
+        for row in range(n):
+            if ok(col, row):
+                sol.append(row); trace.append(sol[:])
+                if bt(col + 1): return True
+                sol.pop(); trace.append(sol[:])
+        return False
+    bt(0); return sol, trace, calls[0]
+sol, trace, calls = nqueens(8)
+print("8-Queens solution (row of queen in each column):", sol, "| recursive calls:", calls, "| board states:", len(trace))
+for n in (4, 6, 8, 10, 12):
+    s, t, c = nqueens(n); print(f"  n={n:>2}: first solution {s}  calls={c}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+8-Queens solution (row of queen in each column): [0, 4, 7, 5, 2, 6, 1, 3] | recursive calls: 114 | board 
+  n= 4: first solution [1, 3, 0, 2]  calls=9
+  n= 6: first solution [1, 3, 5, 0, 2, 4]  calls=32
+  n= 8: first solution [0, 4, 7, 5, 2, 6, 1, 3]  calls=114
+  n=10: first solution [0, 2, 5, 7, 9, 4, 8, 1, 3, 6]  calls=103
+  n=12: first solution [0, 2, 4, 7, 9, 11, 5, 10, 1, 6, 8, 3]  calls=262
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+fig, ax = plt.subplots(figsize=(4.5, 4.8))
+keep = trace[::max(1, len(trace)//40)] + [trace[-1]] * 4
+def drawq(k):
+    s = keep[k]; ax.clear(); n = 8
+    ax.imshow([[(i + j) % 2 for j in range(n)] for i in range(n)], cmap=matplotlib.colors.ListedColormap([MIST, "#C8D0DC"]))
+    for c, r in enumerate(s): ax.text(c, r, "Q", ha="center", va="center", fontsize=24, fontfamily="DejaVu Sans", color=LEAF if len(s) == 8 else NAVY)
+    ax.set_xticks([]); ax.set_yticks([]); ax.set_title(f"Backtracking: {len(s)} queens placed")
+gif = save_gif(animation.FuncAnimation(fig, drawq, frames=len(keep)), "exp05_nqueens_backtracking.gif", fps=4)
+display(Image(filename=gif))
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+NB = {"WA":["NT","SA"],"NT":["WA","SA","Q"],"SA":["WA","NT","Q","NSW","V"],"Q":["NT","SA","NSW"],"NSW":["Q","SA","V"],"V":["SA","NSW"],"T":[]}
+COLS = ["red", "green", "blue"]
+def colour(assign, domains, log):
+    if len(assign) == len(NB): return assign
+    var = min((v for v in NB if v not in assign), key=lambda v: (len(domains[v]), -len(NB[v])))   # MRV + degree
+    for val in domains[var]:
+        new_d = {k: list(d) for k, d in domains.items()}; new_d[var] = [val]; ok = True
+        for nb in NB[var]:
+            if nb not in assign and val in new_d[nb]:
+                new_d[nb].remove(val); ok &= bool(new_d[nb])   # forward checking
+        if ok:
+            log.append(f"{var} = {val}"); r = colour({**assign, var: val}, new_d, log)
+            if r: return r
+            log.append(f"backtrack on {var}")
+    return None
+log = []; res = colour({}, {v: COLS[:] for v in NB}, log)
+print("Assignment order:", " -> ".join(log)); print("Solution:", res)
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Assignment order: SA = red -> NT = green -> Q = blue -> NSW = green -> WA = blue -> V = blue -> T = red
+Solution: {'SA': 'red', 'NT': 'green', 'Q': 'blue', 'NSW': 'green', 'WA': 'blue', 'V': 'blue', 'T': 'red'
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import networkx as nx
+pos = {"WA":(0,1.2),"NT":(1.3,2),"SA":(1.6,0.9),"Q":(2.8,2),"NSW":(3,0.8),"V":(2.5,-0.2),"T":(2.7,-1.2)}
+Gm = nx.Graph([(a, b) for a in NB for b in NB[a]]); Gm.add_node("T")
+pal = {"red": CRIMSON, "green": LEAF, "blue": NAVY2}
+plt.figure(figsize=(5.5, 4.2))
+nx.draw(Gm, pos, with_labels=True, node_color=[pal[res[n]] for n in Gm.nodes], node_size=1700, font_color="white",
+        font_weight="bold", font_family="serif", edge_color=GOLD, width=2.5)
+plt.title("Australia map colouring -- constraint graph"); plt.savefig(f"{FIG}/exp05_map_colouring.png", dpi=130, bbox_inches="tight"); plt.show()
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+PUZ = "530070000600195000098000060800060003400803001700020006060000280000419005000080079"
+cells = [(r, c) for r in range(9) for c in range(9)]
+peers = {x: {y for y in cells if y != x and (y[0] == x[0] or y[1] == x[1] or (y[0]//3, y[1]//3) == (x[0]//3, x[1]//3))} for x in cells}
+def ac3(D):
+    q = [(x, y) for x in cells for y in peers[x]]
+    while q:
+        x, y = q.pop()
+        if len(D[y]) == 1 and D[y][0] in D[x]:
+            D[x] = [v for v in D[x] if v != D[y][0]]
+            if not D[x]: return False
+            q.extend((z, x) for z in peers[x] if z != y)
+    return True
+def solve(D, stats):
+    if not ac3(D): return None
+    if all(len(d) == 1 for d in D.values()): return D
+    x = min((c for c in cells if len(D[c]) > 1), key=lambda c: len(D[c]))
+    for v in D[x]:
+        stats[0] += 1; E = {k: list(d) for k, d in D.items()}; E[x] = [v]
+        r = solve(E, stats)
+        if r: return r
+    return None
+D0 = {(r, c): [int(PUZ[r*9+c])] if PUZ[r*9+c] != "0" else list(range(1, 10)) for r, c in cells}
+D1 = {k: list(v) for k, v in D0.items()}; ac3(D1)
+print("Unknown cells before AC-3:", sum(len(v) > 1 for v in D0.values()), "| after AC-3 alone:", sum(len(v) > 1 for v in D1.values()))
+stats = [0]; S = solve(D0, stats); print("Guesses needed by backtracking:", stats[0])
+fig, ax = plt.subplots(figsize=(4.6, 4.6)); ax.set_xlim(0, 9); ax.set_ylim(0, 9); ax.axis("off")
+for (r, c), v in S.items():
+    given = PUZ[r*9+c] != "0"
+    ax.add_patch(plt.Rectangle((c, 8 - r), 1, 1, color=GOLDL if given else "white", ec="#C8D0DC"))
+    ax.text(c + .5, 8.5 - r, v[0], ha="center", va="center", fontsize=15, color=NAVY if given else TEAL, weight="bold" if given else "normal")
+for t in range(0, 10, 3): ax.plot([t, t], [0, 9], color=NAVY, lw=2.5); ax.plot([0, 9], [t, t], color=NAVY, lw=2.5)
+ax.set_title("Sudoku solved (givens shaded)")
+HARD = "800000000003600000070090200050007000000045700000100030001000068008500010090000400"   # 'world's hardest' (Inkala)
+Dh = {(r, c): [int(HARD[r*9+c])] if HARD[r*9+c] != "0" else list(range(1, 10)) for r, c in cells}
+Dh1 = {k: list(v) for k, v in Dh.items()}; ac3(Dh1)
+st2 = [0]; Sh = solve(Dh, st2)
+print(f"Hard puzzle: unknown after AC-3 = {sum(len(v) > 1 for v in Dh1.values())}, backtracking guesses = {st2[0]}")
+print("Hard puzzle first row solved:", [Sh[(0, c)][0] for c in range(9)]); plt.savefig(f"{FIG}/exp05_sudoku.png", dpi=130, bbox_inches="tight"); plt.show()
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Unknown cells before AC-3: 51 | after AC-3 alone: 0
+Guesses needed by backtracking: 0
+Hard puzzle: unknown after AC-3 = 60, backtracking guesses = 1850
+Hard puzzle first row solved: [8, 1, 2, 7, 5, 3, 6, 4, 9]
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp05_nqueens_backtracking/f-}{0}{14}\\
+{\small\color{slate}\textbf{Animation} (15 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp05\_nqueens\_backtracking.gif}}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp05_map_colouring.png}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp05_sudoku.png}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]Backtracking finds the first 8-queens solution in about a hundred recursive calls; MRV with forward checking colours Australia without any backtracking; AC-3 alone solves an easy Sudoku, while the 'hardest' Sudoku additionally needs backtracking guesses guided by MRV.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item Define a CSP with its three components for map colouring.
+\item What is the MRV heuristic and why is it called fail-first?
+\item Differentiate forward checking from arc consistency.
+\item What is the complexity of AC-3?
+\item Why is Tasmania irrelevant in the Australia map-colouring problem?
+\end{enumerate}
+\newpage
+\section*{Experiment 6: Facts, Rules and Logical Inference}\label{exp6}
+\noindent\co{CO204.3}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Represent facts and rules in a knowledge base (Prolog-style, in Python) and answer queries using forward chaining and backward chaining, including a propositional truth-table entailment checker.\end{keypoint}
+\subsection*{Theory}
+A \textbf{knowledge base} stores facts (ground atoms) and rules (Horn clauses $p_1\wedge\dots\wedge p_n\Rightarrow q$).
+
+\textbf{Forward chaining} fires rules whose premises are satisfied until no new facts appear (data-driven).
+
+\textbf{Backward chaining} starts from the query and recursively proves the rule premises (goal-driven, as in Prolog).
+
+\textbf{Model checking} decides $KB\models\alpha$ by enumerating all truth assignments.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item Store facts as tuples, e.g. ('parent', 'ram', 'sita'); rules as (head, [body literals]) with variables starting with '?'.
+\item Forward chaining: repeatedly unify rule bodies with known facts and add instantiated heads.
+\item Backward chaining: to prove a goal, unify it with a fact or a rule head and prove the body recursively.
+\item Print the derived facts, query answers and proof traces.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp06\_Logic\_Facts\_Rules\_Inference.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp06\_Logic\_Facts\_Rules\_Inference.py}}
+\begin{lstlisting}[style=py]
+import itertools
+FACTS = {("parent","dashrath","ram"), ("parent","dashrath","bharat"), ("parent","ram","luv"), ("parent","ram","kush"),
+         ("parent","kaushalya","ram"), ("male","dashrath"), ("male","ram"), ("male","bharat"), ("male","luv"), ("male","kush"),
+         ("female","kaushalya"), ("female","sita"), ("parent","sita","luv"), ("parent","sita","kush")}
+RULES = [
+  (("father","?x","?y"),      [("parent","?x","?y"), ("male","?x")]),
+  (("mother","?x","?y"),      [("parent","?x","?y"), ("female","?x")]),
+  (("grandparent","?x","?z"), [("parent","?x","?y"), ("parent","?y","?z")]),
+  (("sibling","?x","?y"),     [("parent","?p","?x"), ("parent","?p","?y"), ("neq","?x","?y")]),
+  (("uncle","?u","?c"),       [("parent","?p","?c"), ("sibling","?u","?p"), ("male","?u")]),
+]
+def is_var(t): return isinstance(t, str) and t.startswith("?")
+def walk(t, th):
+    while is_var(t) and t in th: t = th[t]
+    return t
+def subst(lit, th): return tuple(walk(t, th) for t in lit)
+def match(pat, fact, th):
+    if len(pat) != len(fact): return None
+    th = dict(th)
+    for p, f in zip(pat, fact):
+        p = th.get(p, p)
+        if is_var(p): th[p] = f
+        elif p != f: return None
+    return th
+print(f"KB: {len(FACTS)} facts, {len(RULES)} rules")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+KB: 14 facts, 5 rules
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+def forward_chain(facts, rules, verbose=True):
+    facts = set(facts); rnd = 0; history = []
+    while True:
+        rnd += 1; new = set()
+        for head, body in rules:
+            def sat(i, th):
+                if i == len(body): yield th; return
+                lit = subst(body[i], th)
+                if lit[0] == "neq":
+                    if lit[1] != lit[2]: yield from sat(i + 1, th)
+                    return
+                for f in facts:
+                    t2 = match(lit, f, th)
+                    if t2 is not None: yield from sat(i + 1, t2)
+            for th in sat(0, {}):
+                h = subst(head, th)
+                if h not in facts: new.add(h)
+        if not new: break
+        history.append((rnd, sorted(new))); facts |= new
+        if verbose: print(f"Round {rnd}: +{len(new)} facts ->", ", ".join(f"{p}({', '.join(a)})" for p, *a in sorted(new)))
+    return facts, history
+ALL, hist = forward_chain(FACTS, RULES)
+print("\nGrandparents of luv:", sorted(f[1] for f in ALL if f[0] == "grandparent" and f[2] == "luv"))
+print("Uncle of luv       :", sorted(f[1] for f in ALL if f[0] == "uncle" and f[2] == "luv"))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Round 1: +15 facts -> father(dashrath, bharat), father(dashrath, ram), father(ram, kush), father(ram, luv
+Round 2: +2 facts -> uncle(bharat, kush), uncle(bharat, luv)
+
+Grandparents of luv: ['dashrath', 'kaushalya']
+Uncle of luv       : ['bharat']
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+counter = itertools.count()
+def rename(rule):
+    k = next(counter); ren = lambda l: tuple(f"{t}_{k}" if is_var(t) else t for t in l)
+    return ren(rule[0]), [ren(b) for b in rule[1]]
+def bc(goals, th, depth=0, trace=None):
+    if not goals: yield th; return
+    g = subst(goals[0], th); rest = goals[1:]
+    if g[0] == "neq":
+        if g[1] != g[2]: yield from bc(rest, th, depth, trace)
+        return
+    for f in sorted(FACTS):
+        t2 = match(g, f, th)
+        if t2 is not None:
+            if trace is not None: trace.append("  " * depth + f"[ok] fact {f[0]}({', '.join(f[1:])})")
+            yield from bc(rest, t2, depth, trace)
+    for rule in RULES:
+        head, body = rename(rule)
+        # unify the renamed rule head with the goal
+        t2 = dict(th); ok = True
+        for a, b in zip(head, g):
+            a, b = walk(a, t2), walk(b, t2)
+            if a == b: continue
+            if is_var(a): t2[a] = b
+            elif is_var(b): t2[b] = a
+            else: ok = False; break
+        if ok and len(head) == len(g):
+            if trace is not None: trace.append("  " * depth + f"-> try rule {rule[0][0]} for {g[0]}({', '.join(g[1:])})")
+            yield from bc(body + rest, t2, depth + 1, trace)
+def ask(q):
+    tr = []; sols = []
+    for th in bc([q], {}, 0, tr):
+        sols.append(subst(q, th)); break
+    return sols, tr
+for q in [("grandparent","dashrath","kush"), ("uncle","bharat","luv"), ("mother","sita","kush"), ("father","bharat","luv")]:
+    s, tr = ask(q)
+    print(f"?- {q[0]}({', '.join(q[1:])}).  ->  {'YES' if s else 'NO'}")
+s, tr = ask(("uncle","bharat","luv")); print("\nProof trace for uncle(bharat, luv):"); print("\n".join(tr[:14]))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+?- grandparent(dashrath, kush).  ->  YES
+?- uncle(bharat, luv).  ->  YES
+?- mother(sita, kush).  ->  YES
+?- father(bharat, luv).  ->  NO
+
+Proof trace for uncle(bharat, luv):
+-> try rule uncle for uncle(bharat, luv)
+  [ok] fact parent(ram, luv)
+  -> try rule sibling for sibling(bharat, ram)
+    [ok] fact parent(dashrath, bharat)
+    [ok] fact parent(dashrath, ram)
+    [ok] fact male(bharat)
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import pandas as pd
+syms = ["P", "Q", "R"]
+KB    = lambda m: (not m["P"] or m["Q"]) and (not m["Q"] or m["R"]) and m["P"]   # P=>Q, Q=>R, P
+alpha = lambda m: m["R"]
+rows = []
+for vals in itertools.product([False, True], repeat=3):
+    m = dict(zip(syms, vals)); rows.append({**{k: "T" if v else "F" for k, v in m.items()}, "KB": "T" if KB(m) else "F", "alpha": "T" if alpha(m) else "F"})
+df = pd.DataFrame(rows); df.columns = ["P", "Q", "R", "KB", "alpha = R"]; print(df.to_string(index=False))
+entails = all(alpha(dict(zip(syms, v))) for v in itertools.product([False, True], repeat=3) if KB(dict(zip(syms, v))))
+print("\nKB |= R ?", entails)
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+P Q R KB alpha = R
+F F F  F     F
+F F T  F     T
+F T F  F     F
+F T T  F     T
+T F F  F     F
+T F T  F     T
+T T F  F     F
+T T T  T     T
+
+KB |= R ? True
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import networkx as nx
+G = nx.DiGraph(); base = [f for f in FACTS if f[0] == "parent"]
+for f in base: G.add_edge(f[1], f[2], kind="parent")
+for f in ALL:
+    if f[0] in ("grandparent", "uncle"): G.add_edge(f[1], f[2], kind=f[0])
+pos = {"dashrath": (0.5, 2), "kaushalya": (2, 2), "ram": (1.2, 1), "bharat": (-0.6, 1), "sita": (2.8, 1), "luv": (0.6, 0), "kush": (2.2, 0)}
+fig, ax = plt.subplots(figsize=(7, 5))
+def drawkb(k):
+    ax.clear(); kinds = ["parent"] + (["grandparent"] if k >= 1 else []) + (["uncle"] if k >= 2 else [])
+    cmap = {"parent": SLATE, "grandparent": GOLD, "uncle": CRIMSON}
+    es = [(u, v) for u, v, d in G.edges(data=True) if d["kind"] in kinds]
+    nx.draw_networkx_nodes(G, pos, ax=ax, node_color=NAVY, node_size=1400)
+    nx.draw_networkx_labels(G, pos, ax=ax, font_color="white", font_family="serif", font_size=9)
+    nx.draw_networkx_edges(G, pos, ax=ax, edgelist=es, edge_color=[cmap[G[u][v]["kind"]] for u, v in es], width=2.2, arrowsize=14,
+                           connectionstyle="arc3,rad=0.15", node_size=1400)
+    ax.set_xlim(-1.2, 3.4); ax.set_ylim(-0.5, 2.5)
+    ax.set_title(["Base facts: parent", "Forward chaining adds grandparent (gold)", "...then uncle (crimson)"][min(k, 2)]); ax.axis("off")
+gif = save_gif(animation.FuncAnimation(fig, drawkb, frames=4), "exp06_forward_chaining.gif", fps=0.8)
+display(Image(filename=gif))
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp06_forward_chaining/f-}{0}{2}\\
+{\small\color{slate}\textbf{Animation} (3 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp06\_forward\_chaining.gif}}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]Forward chaining derived all father, mother, grandparent, sibling and uncle relations in a few rounds; backward chaining answered individual queries with an explicit proof trace; model checking confirmed that {P$\Rightarrow$Q, Q$\Rightarrow$R, P} entails R.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item Differentiate forward and backward chaining.
+\item What is a Horn clause and why is it important for chaining?
+\item How does Prolog implement backward chaining?
+\item What is the complexity of truth-table model checking?
+\item Why did we need the 'neq' built-in in the sibling rule?
+\end{enumerate}
+\newpage
+\section*{Experiment 7: Unification and Resolution in First-Order Logic}\label{exp7}
+\noindent\co{CO204.3}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Implement the unification algorithm (with occurs check) and a resolution refutation prover for first-order clauses; prove classic textbook theorems.\end{keypoint}
+\subsection*{Theory}
+\textbf{Unification} finds the most general substitution $\theta$ such that $p\theta=q\theta$. The \textbf{occurs check} rejects bindings like $x/f(x)$.
+
+\textbf{Resolution:} from clauses $(\ell_1\vee\alpha)$ and $(\neg\ell_2\vee\beta)$ with $\textsc{Unify}(\ell_1,\ell_2)=\theta$ derive $(\alpha\vee\beta)\theta$.
+
+To prove $KB\models q$: add $\neg q$ to the clause set and derive the empty clause $\square$.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item Represent terms as nested tuples: variables are lowercase strings starting with '?'; f(x) is ('f', x).
+\item UNIFY(x, y, $\theta$): if equal return $\theta$; if x is a variable bind it (with occurs check); if compound unify arguments pairwise.
+\item Convert KB and negated goal into clauses (sets of literals).
+\item Repeatedly resolve pairs of clauses; stop when the empty clause appears (proof) or no new clauses (no proof).
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp07\_Unification\_Resolution\_FOL.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp07\_Unification\_Resolution\_FOL.py}}
+\begin{lstlisting}[style=py]
+def is_var(t): return isinstance(t, str) and t.startswith("?")
+def walk(t, th):
+    while is_var(t) and t in th: t = th[t]
+    return t
+def occurs(v, t, th):
+    t = walk(t, th)
+    if t == v: return True
+    return isinstance(t, tuple) and any(occurs(v, a, th) for a in t[1:])
+def unify(x, y, th=None):
+    if th is None: th = {}
+    x, y = walk(x, th), walk(y, th)
+    if x == y: return th
+    if is_var(x): return None if occurs(x, y, th) else {**th, x: y}
+    if is_var(y): return unify(y, x, th)
+    if isinstance(x, tuple) and isinstance(y, tuple) and x[0] == y[0] and len(x) == len(y):
+        for a, b in zip(x[1:], y[1:]):
+            th = unify(a, b, th)
+            if th is None: return None
+        return th
+    return None
+def resolve_term(t, th):
+    t = walk(t, th)
+    return (t[0],) + tuple(resolve_term(a, th) for a in t[1:]) if isinstance(t, tuple) else t
+def show(t):
+    if isinstance(t, tuple): return f"{t[0]}({', '.join(show(a) for a in t[1:])})"
+    return t.lstrip("?")
+def show_th(th): return "{" + ", ".join(f"{k.lstrip('?')}/{show(resolve_term(v, th))}" for k, v in th.items()) + "}" if th is not None else "FAIL"
+
+tests = [(("Knows","John","?x"), ("Knows","John","Jane")),
+         (("Knows","John","?x"), ("Knows","?y","Bill")),
+         (("Knows","John","?x"), ("Knows","?y",("Mother","?y"))),
+         (("Knows","John","?x"), ("Knows","?x","Elizabeth")),
+         (("P","?x",("f","?y")), ("P","a",("f",("g","?z")))),
+         (("Q","?x"), ("Q",("f","?x")))]
+for a, b in tests: print(f"UNIFY({show(a):<22}, {show(b):<26}) = {show_th(unify(a, b))}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+UNIFY(Knows(John, x)        , Knows(John, Jane)         ) = {x/Jane}
+UNIFY(Knows(John, x)        , Knows(y, Bill)            ) = {y/John, x/Bill}
+UNIFY(Knows(John, x)        , Knows(y, Mother(y))       ) = {y/John, x/Mother(John)}
+UNIFY(Knows(John, x)        , Knows(x, Elizabeth)       ) = FAIL
+UNIFY(P(x, f(y))            , P(a, f(g(z)))             ) = {x/a, y/g(z)}
+UNIFY(Q(x)                  , Q(f(x))                   ) = FAIL
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import itertools
+def neg(l): return l[1] if l[0] == "not" else ("not", l)
+def subst_lit(l, th): return ("not", resolve_term(l[1], th)) if l[0] == "not" else resolve_term(l, th)
+cid = itertools.count()
+def standardise(clause):
+    k = next(cid); m = {}
+    def rn(t):
+        if is_var(t): m.setdefault(t, f"{t}{k}"); return m[t]
+        return (t[0],) + tuple(rn(a) for a in t[1:]) if isinstance(t, tuple) else t
+    return frozenset(("not", rn(l[1])) if l[0] == "not" else rn(l) for l in clause)
+def resolvents(c1, c2):
+    out = []
+    for l1 in c1:
+        for l2 in c2:
+            if (l1[0] == "not") != (l2[0] == "not"):
+                a, b = (l1[1], l2) if l1[0] == "not" else (l1, l2[1])
+                th = unify(a, b)
+                if th is not None:
+                    new = frozenset(subst_lit(l, th) for l in (c1 - {l1}) | (c2 - {l2}))
+                    out.append((new, th, l1, l2))
+    return out
+def prove(kb, goal, max_iter=2000):
+    clauses = [standardise(c) for c in kb] + [standardise([neg(goal)])]
+    names = {c: f"C{i+1}" for i, c in enumerate(clauses)}; steps = []; seen = set(clauses)
+    for _ in range(max_iter):
+        new = []
+        for c1, c2 in itertools.combinations(list(seen), 2):
+            for r, th, l1, l2 in resolvents(c1, c2):
+                if r in seen or r in [n for n, *_ in new]: continue
+                new.append((r, c1, c2, th))
+                if not r:
+                    steps.append((r, c1, c2, th)); return True, steps, names
+        if not new: return False, steps, names
+        for r, c1, c2, th in sorted(new, key=lambda x: len(x[0]))[:30]:
+            seen.add(r); names[r] = f"C{len(names)+1}"; steps.append((r, c1, c2, th))
+    return False, steps, names
+def cs(c): return " | ".join(("~" + show(l[1])) if l[0] == "not" else show(l) for l in sorted(c, key=str)) or "[]"
+
+# Example 1 -- Socrates
+KB1 = [[("not", ("Man","?x")), ("Mortal","?x")], [("Man","Socrates")]]
+ok, st, nm = prove(KB1, ("Mortal","Socrates"))
+print("KB: forall x Man(x) => Mortal(x);  Man(Socrates)   Goal: Mortal(Socrates)")
+for r, c1, c2, th in st: print(f"   resolve [{cs(c1)}] with [{cs(c2)}]  =>  {cs(r)}")
+print("Proved!" if ok else "Not proved")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+KB: forall x Man(x) => Mortal(x);  Man(Socrates)   Goal: Mortal(Socrates)
+   resolve [Mortal(x0) | ~Man(x0)] with [Man(Socrates)]  =>  Mortal(Socrates)
+   resolve [Mortal(x0) | ~Man(x0)] with [~Mortal(Socrates)]  =>  ~Man(Socrates)
+   resolve [~Mortal(Socrates)] with [Mortal(Socrates)]  =>  []
+Proved!
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+# Example 2 -- Colonel West (Russell & Norvig 9.3)
+KB2 = [
+ [("not",("American","?x")),("not",("Weapon","?y")),("not",("Sells","?x","?y","?z")),("not",("Hostile","?z")),("Criminal","?x")],
+ [("not",("Missile","?x")),("not",("Owns","Nono","?x")),("Sells","West","?x","Nono")],
+ [("not",("Missile","?x")),("Weapon","?x")],
+ [("not",("Enemy","?x","America")),("Hostile","?x")],
+ [("Owns","Nono","M1")],[("Missile","M1")],[("American","West")],[("Enemy","Nono","America")]]
+ok, st, nm = prove(KB2, ("Criminal","West"))
+print("Goal: Criminal(West) ->", "PROVED [ok]" if ok else "not proved", f"after generating {len(st)} resolvents")
+chain = []
+r = st[-1]
+print("Final step:", f"[{cs(r[1])}] + [{cs(r[2])}] => {cs(r[0])}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Goal: Criminal(West) -> PROVED [ok] after generating 100 resolvents
+Final step: [~Sells(West, M1, Nono)] + [Sells(West, M1, Nono)] => []
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+# Visualise the Socrates refutation as a proof tree
+fig, ax = plt.subplots(figsize=(7.5, 4)); ax.axis("off")
+boxes = {"C1": (0.15, 0.85, "~Man(x) | Mortal(x)"), "C3": (0.62, 0.85, "~Mortal(Socrates)  [negated goal]"),
+         "R1": (0.38, 0.5, "~Man(Socrates)   theta={x/Socrates}"), "C2": (0.85, 0.5, "Man(Socrates)"), "R2": (0.6, 0.12, "[]  (empty clause)")}
+for k, (x, y, t) in boxes.items():
+    ax.text(x, y, t, ha="center", va="center", fontsize=12, color="white" if k.startswith("R") else NAVY,
+            bbox=dict(boxstyle="round,pad=0.5", fc=NAVY if k.startswith("R") else GOLDL, ec=GOLD, lw=2))
+for a, b in (("C1","R1"),("C3","R1"),("R1","R2"),("C2","R2")):
+    ax.annotate("", xy=boxes[b][:2], xytext=boxes[a][:2], arrowprops=dict(arrowstyle="-|>", color=TEAL, lw=2, shrinkA=18, shrinkB=18))
+ax.set_title("Resolution refutation proof of Mortal(Socrates)")
+plt.savefig(f"{FIG}/exp07_resolution_tree.png", dpi=130, bbox_inches="tight"); plt.show()
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp07_resolution_tree.png}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]The unifier returned the expected MGUs, correctly failed on the clash requiring standardising apart, and the occurs check blocked x/f(x). The resolution prover derived the empty clause for both Mortal(Socrates) and Criminal(West).\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item What is a most general unifier?
+\item Why is the occurs check needed?
+\item Why must variables be standardised apart before resolution?
+\item What is Skolemisation?
+\item Why is resolution called refutation-complete?
+\end{enumerate}
+\newpage
+\section*{Experiment 8: Bayes' Theorem and a Bayesian Network for Diagnosis}\label{exp8}
+\noindent\co{CO204.4}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Apply Bayes' theorem to a medical-test diagnosis problem and implement the Burglary--Alarm Bayesian network with exact inference by enumeration and approximate inference by sampling.\end{keypoint}
+\subsection*{Theory}
+\textbf{Bayes' theorem:} $P(H\mid E)=\dfrac{P(E\mid H)P(H)}{P(E)}$.
+
+A \textbf{Bayesian network} is a DAG with a CPT per node; the joint is $\prod_i P(x_i\mid parents(X_i))$.
+
+\textbf{Enumeration:} $P(X\mid e)=\alpha\sum_y P(X,e,y)$. \textbf{Rejection sampling} estimates the same posterior from random samples.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item Encode priors and conditional probabilities.
+\item Compute the posterior with Bayes' rule and study how it varies with the prior.
+\item Encode the Burglary network CPTs; compute the joint probability of a full assignment.
+\item Compute P(Burglary | JohnCalls, MaryCalls) by enumeration and compare with rejection sampling.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp08\_Bayes\_BayesianNetwork\_Diagnosis.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp08\_Bayes\_BayesianNetwork\_Diagnosis.py}}
+\begin{lstlisting}[style=py]
+def bayes(prior, sens, fpr):
+    evidence = sens * prior + fpr * (1 - prior)
+    return sens * prior / evidence, evidence
+post, ev = bayes(prior=0.01, sens=0.90, fpr=0.05)
+print(f"P(+) = {ev:.4f}")
+print(f"P(Disease | +) = {post:.4f}  ->  only {post:.1%} despite a 90%-sensitive test (base-rate effect)")
+post2, _ = bayes(prior=post, sens=0.90, fpr=0.05)
+print(f"After a second independent positive test: {post2:.1%}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+P(+) = 0.0585
+P(Disease | +) = 0.1538  ->  only 15.4% despite a 90%-sensitive test (base-rate effect)
+After a second independent positive test: 76.6%
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+priors = np.linspace(0.001, 0.5, 300)
+plt.figure(figsize=(6.8, 3.8))
+for sens, fpr, c in ((0.90, 0.05, NAVY), (0.99, 0.01, TEAL), (0.80, 0.10, CRIMSON)):
+    plt.plot(priors, [bayes(p, sens, fpr)[0] for p in priors], color=c, lw=2.5, label=f"sens={sens}, FPR={fpr}")
+plt.axvline(0.01, color=GOLD, ls="--"); plt.text(0.015, 0.05, "prevalence 1%", color=GOLD)
+plt.xlabel("prior P(Disease)"); plt.ylabel("posterior P(Disease | +)"); plt.legend(frameon=False); plt.title("Posterior depends strongly on the prior")
+plt.tight_layout(); plt.savefig(f"{FIG}/exp08_posterior_vs_prior.png", dpi=130); plt.show()
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import itertools
+P_B, P_E = 0.001, 0.002
+P_A = {(True, True): 0.95, (True, False): 0.94, (False, True): 0.29, (False, False): 0.001}
+P_J = {True: 0.90, False: 0.05}; P_M = {True: 0.70, False: 0.01}
+def p(v, prob): return prob if v else 1 - prob
+def joint(b, e, a, j, m):
+    return p(b, P_B) * p(e, P_E) * p(a, P_A[(b, e)]) * p(j, P_J[a]) * p(m, P_M[a])
+print(f"P(j, m, a, ~b, ~e) = {joint(False, False, True, True, True):.6f}")
+
+def enumerate_query(var, evidence):
+    names = ["B", "E", "A", "J", "M"]; dist = {}
+    for val in (True, False):
+        tot = 0.0
+        for vals in itertools.product((True, False), repeat=5):
+            asg = dict(zip(names, vals))
+            if asg[var] != val or any(asg[k] != v for k, v in evidence.items()): continue
+            tot += joint(*vals)
+        dist[val] = tot
+    z = sum(dist.values()); return {k: v / z for k, v in dist.items()}
+for q, ev in (("B", {"J": True, "M": True}), ("E", {"J": True, "M": True}), ("A", {"J": True, "M": True}), ("B", {"J": True, "M": False})):
+    r = enumerate_query(q, ev); print(f"P({q}=T | {', '.join(f'{k}={v}' for k, v in ev.items())}) = {r[True]:.4f}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+P(j, m, a, ~b, ~e) = 0.000628
+P(B=T | J=True, M=True) = 0.2842
+P(E=T | J=True, M=True) = 0.1761
+P(A=T | J=True, M=True) = 0.7607
+P(B=T | J=True, M=False) = 0.0051
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+rng = np.random.default_rng(0)
+def prior_sample():
+    b = rng.random() < P_B; e = rng.random() < P_E; a = rng.random() < P_A[(b, e)]
+    return b, e, a, rng.random() < P_J[a], rng.random() < P_M[a]
+def likelihood_weighting(n):
+    wsum = {True: 0.0, False: 0.0}; est = []
+    for i in range(1, n + 1):
+        b = rng.random() < P_B; e = rng.random() < P_E; a = rng.random() < P_A[(b, e)]
+        w = P_J[a] * P_M[a]; wsum[b] += w
+        if i % 500 == 0: est.append(wsum[True] / (wsum[True] + wsum[False]))
+    return est
+exact = enumerate_query("B", {"J": True, "M": True})[True]
+est = likelihood_weighting(100_000)
+print(f"Exact P(B | j, m) = {exact:.4f};  likelihood weighting (100k samples) ~= {est[-1]:.4f}")
+fig, ax = plt.subplots(figsize=(6.8, 3.6)); xs = np.arange(1, len(est) + 1) * 500
+line, = ax.plot([], [], color=NAVY, lw=2); ax.axhline(exact, color=GOLD, ls="--", lw=2, label=f"exact = {exact:.3f}")
+ax.set_xlim(0, xs[-1]); ax.set_ylim(0, 0.8); ax.set_xlabel("samples"); ax.set_ylabel("estimate"); ax.legend(frameon=False)
+def upd(k):
+    line.set_data(xs[:k + 1], est[:k + 1]); ax.set_title(f"Likelihood weighting converges -- {xs[k]:,} samples"); return line,
+gif = save_gif(animation.FuncAnimation(fig, upd, frames=range(0, len(est), 5)), "exp08_sampling_convergence.gif", fps=6)
+display(Image(filename=gif))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Exact P(B | j, m) = 0.2842;  likelihood weighting (100k samples) ~= 0.2975
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import networkx as nx
+G = nx.DiGraph([("Burglary","Alarm"),("Earthquake","Alarm"),("Alarm","JohnCalls"),("Alarm","MaryCalls")])
+pos = {"Burglary":(0,1),"Earthquake":(2,1),"Alarm":(1,0.5),"JohnCalls":(0,0),"MaryCalls":(2,0)}
+plt.figure(figsize=(6, 3.6))
+nx.draw(G, pos, with_labels=True, node_color=[GOLDL, GOLDL, NAVY, MIST, MIST], node_size=3800, edgecolors=NAVY,
+        font_color="black", font_family="serif", font_size=10, arrowsize=18, edge_color=TEAL, width=2)
+plt.title("Bayesian network structure"); plt.savefig(f"{FIG}/exp08_bayesnet.png", dpi=130, bbox_inches="tight"); plt.show()
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp08_sampling_convergence/f-}{0}{14}\\
+{\small\color{slate}\textbf{Animation} (15 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp08\_sampling\_convergence.gif}}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp08_bayesnet.png}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp08_posterior_vs_prior.png}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]A positive result from a 90\%-sensitive test with 1\% prevalence gives only a 15.4\% chance of disease. In the alarm network, P(Burglary | JohnCalls, MaryCalls) = 0.284 by exact enumeration, and likelihood weighting converges to the same value.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item State Bayes' theorem and name each term.
+\item Explain the base-rate fallacy with the medical test example.
+\item Why is a Bayesian network more compact than the full joint distribution?
+\item What is the complexity of inference by enumeration?
+\item How does likelihood weighting differ from rejection sampling?
+\end{enumerate}
+\newpage
+\section*{Experiment 9: Decision-Tree Classifier and Rule Extraction}\label{exp9}
+\noindent\co{CO204.5}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Build a decision tree (ID3 from scratch on the Play-Tennis data and scikit-learn CART on the Iris data), interpret the learned rules and study overfitting with depth.\end{keypoint}
+\subsection*{Theory}
+Entropy $H(S)=-\sum_k p_k\log_2p_k$; information gain $Gain(S,A)=H(S)-\sum_v\frac{|S_v|}{|S|}H(S_v)$.
+
+ID3 chooses the attribute with the highest gain at each node and recurses until nodes are pure. CART uses the Gini index. Deep trees overfit; limit depth or prune.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item Compute the entropy of the full dataset.
+\item Compute the information gain of every attribute; split on the best.
+\item Recurse on each subset until pure or no attributes remain.
+\item Convert each root-to-leaf path into an IF--THEN rule; evaluate on test data.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp09\_DecisionTree\_Rules.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp09\_DecisionTree\_Rules.py}}
+\begin{lstlisting}[style=py]
+import pandas as pd
+from math import log2
+data = pd.DataFrame([
+ ["Sunny","Hot","High","Weak","No"],["Sunny","Hot","High","Strong","No"],["Overcast","Hot","High","Weak","Yes"],
+ ["Rain","Mild","High","Weak","Yes"],["Rain","Cool","Normal","Weak","Yes"],["Rain","Cool","Normal","Strong","No"],
+ ["Overcast","Cool","Normal","Strong","Yes"],["Sunny","Mild","High","Weak","No"],["Sunny","Cool","Normal","Weak","Yes"],
+ ["Rain","Mild","Normal","Weak","Yes"],["Sunny","Mild","Normal","Strong","Yes"],["Overcast","Mild","High","Strong","Yes"],
+ ["Overcast","Hot","Normal","Weak","Yes"],["Rain","Mild","High","Strong","No"]],
+ columns=["Outlook","Temperature","Humidity","Wind","Play"])
+def H(s):
+    p = s.value_counts(normalize=True); return -sum(q * log2(q) for q in p if q > 0)
+def gain(df, a, t="Play"):
+    return H(df[t]) - sum(len(g) / len(df) * H(g[t]) for _, g in df.groupby(a))
+print(f"H(S) = {H(data['Play']):.3f}")
+gains = {a: gain(data, a) for a in data.columns[:-1]}
+for a, g in sorted(gains.items(), key=lambda x: -x[1]): print(f"  Gain(S, {a:<11}) = {g:.3f}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+H(S) = 0.940
+  Gain(S, Outlook    ) = 0.247
+  Gain(S, Humidity   ) = 0.152
+  Gain(S, Wind       ) = 0.048
+  Gain(S, Temperature) = 0.029
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+def id3(df, attrs, t="Play"):
+    if df[t].nunique() == 1: return df[t].iloc[0]
+    if not attrs: return df[t].mode()[0]
+    best = max(attrs, key=lambda a: gain(df, a))
+    return {best: {v: id3(g, [a for a in attrs if a != best]) for v, g in df.groupby(best)}}
+tree = id3(data, list(data.columns[:-1]))
+def rules(node, cond=()):
+    if not isinstance(node, dict): yield cond, node; return
+    (a, branches), = node.items()
+    for v, sub in branches.items(): yield from rules(sub, cond + ((a, v),))
+print("Learned tree:", tree, "\n")
+for c, out in rules(tree): print("IF " + " AND ".join(f"{a} = {v}" for a, v in c) + f"  THEN Play = {out}")
+def predict(node, x):
+    while isinstance(node, dict): (a, br), = node.items(); node = br[x[a]]
+    return node
+acc = np.mean([predict(tree, r) == r["Play"] for _, r in data.iterrows()]); print(f"\nTraining accuracy: {acc:.0%}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Learned tree: {'Outlook': {'Overcast': 'Yes', 'Rain': {'Wind': {'Strong': 'No', 'Weak': 'Yes'}}, 'Sunny':
+
+IF Outlook = Overcast  THEN Play = Yes
+IF Outlook = Rain AND Wind = Strong  THEN Play = No
+IF Outlook = Rain AND Wind = Weak  THEN Play = Yes
+IF Outlook = Sunny AND Humidity = High  THEN Play = No
+IF Outlook = Sunny AND Humidity = Normal  THEN Play = Yes
+
+Training accuracy: 100%
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+fig, ax = plt.subplots(figsize=(6.5, 3.4))
+ks = sorted(gains, key=lambda k: -gains[k])
+ax.bar(ks, [gains[k] for k in ks], color=[NAVY, TEAL, GOLD, CRIMSON])
+for i, k in enumerate(ks): ax.text(i, gains[k] + 0.005, f"{gains[k]:.3f}", ha="center", color=NAVY, weight="bold")
+ax.set_ylabel("information gain (bits)"); ax.set_title("Root selection: Outlook has the highest gain")
+plt.tight_layout(); plt.savefig(f"{FIG}/exp09_gain.png", dpi=130); plt.show()
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier, export_text, plot_tree
+from sklearn.metrics import accuracy_score, confusion_matrix
+iris = load_iris(); X, y = iris.data, iris.target
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+clf = DecisionTreeClassifier(max_depth=3, random_state=0).fit(Xtr, ytr)
+print("Test accuracy:", round(accuracy_score(yte, clf.predict(Xte)), 3))
+print("Confusion matrix:\n", confusion_matrix(yte, clf.predict(Xte)))
+print("\nRules learned:\n" + export_text(clf, feature_names=list(iris.feature_names)))
+plt.figure(figsize=(10, 5.5))
+plot_tree(clf, feature_names=iris.feature_names, class_names=iris.target_names, filled=True, rounded=True, fontsize=9)
+plt.title("CART decision tree (max_depth = 3)"); plt.savefig(f"{FIG}/exp09_iris_tree.png", dpi=130, bbox_inches="tight"); plt.show()
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Test accuracy: 0.933
+Confusion matrix:
+ [[15  0  0]
+ [ 0 14  1]
+ [ 0  2 13]]
+
+Rules learned:
+|--- petal width (cm) <= 0.70
+|   |--- class: 0
+|--- petal width (cm) >  0.70
+|   |--- petal width (cm) <= 1.55
+|   |   |--- petal length (cm) <= 4.95
+|   |   |   |--- class: 1
+|   |   |--- petal length (cm) >  4.95
+|   |   |   |--- class: 2
+|   |--- petal width (cm) >  1.55
+|   |   |--- petal length (cm) <= 4.85
+|   |   |   |--- class: 1
+|   |   |--- petal length (cm) >  4.85
+|   |   |   |--- class: 2
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+depths = range(1, 11); tr_acc, te_acc = [], []
+for d in depths:
+    m = DecisionTreeClassifier(max_depth=d, random_state=0).fit(Xtr, ytr)
+    tr_acc.append(m.score(Xtr, ytr)); te_acc.append(m.score(Xte, yte))
+plt.figure(figsize=(6.5, 3.5)); plt.plot(depths, tr_acc, "-o", color=NAVY, label="train"); plt.plot(depths, te_acc, "-s", color=GOLD, label="test")
+plt.xlabel("max depth"); plt.ylabel("accuracy"); plt.legend(frameon=False); plt.title("Depth vs accuracy -- watch for overfitting")
+plt.tight_layout(); plt.savefig(f"{FIG}/exp09_depth.png", dpi=130); plt.show()
+
+X2 = X[:, 2:4]; xx, yy = np.meshgrid(np.linspace(0.5, 7.2, 300), np.linspace(0, 2.7, 300))
+fig, ax = plt.subplots(figsize=(6, 4.4)); cm = matplotlib.colors.ListedColormap([GOLDL, "#BFE3E6", "#D9DEEA"])
+def frm(k):
+    d = k + 1; m = DecisionTreeClassifier(max_depth=d, random_state=0).fit(X2, y); ax.clear()
+    ax.contourf(xx, yy, m.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape), cmap=cm)
+    for c, col in zip(range(3), [GOLD, TEAL, NAVY]): ax.scatter(*X2[y == c].T, color=col, edgecolor="white", s=40, label=iris.target_names[c])
+    ax.set_xlabel("petal length"); ax.set_ylabel("petal width"); ax.legend(frameon=False, loc="upper left")
+    ax.set_title(f"Decision boundary, depth = {d}, train acc = {m.score(X2, y):.2f}")
+gif = save_gif(animation.FuncAnimation(fig, frm, frames=6), "exp09_tree_boundary.gif", fps=1)
+display(Image(filename=gif))
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp09_tree_boundary/f-}{0}{5}\\
+{\small\color{slate}\textbf{Animation} (6 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp09\_tree\_boundary.gif}}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp09_depth.png}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp09_gain.png}
+\end{center}
+\begin{center}
+\includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{../assets/figures/exp09_iris_tree.png}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]ID3 selected Outlook (gain 0.247) as the root and produced five readable rules with 100\% training accuracy. CART on Iris reached high test accuracy at depth 3; deeper trees fit training data perfectly without improving test accuracy --- a sign of overfitting.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item Define entropy and information gain.
+\item Why is Outlook chosen as the root for Play Tennis?
+\item Compare Gini index and entropy.
+\item How does pruning reduce overfitting?
+\item Why are decision trees considered interpretable models?
+\end{enumerate}
+\newpage
+\section*{Experiment 10: Rule-Based Expert System and a Basic Chatbot (Mini-Project)}\label{exp10}
+\noindent\co{CO204.5}\ \btl{L3 Apply}\ \btl{L4 Analyse}\hfill\textbf{\color{navy}Date:}\ \rule{3cm}{0.4pt}\quad\textbf{\color{navy}Sign:}\ \rule{3cm}{0.4pt}\par\medskip
+\begin{keypoint}[Aim]Develop a rule-based expert system with certainty factors and an explanation facility for crop-disease advice, and a pattern-matching chatbot for college admission queries.\end{keypoint}
+\subsection*{Theory}
+An expert system has a \textbf{knowledge base} (IF--THEN rules), \textbf{working memory} (facts), an \textbf{inference engine} (match $\to$ conflict resolution $\to$ act) and an \textbf{explanation facility}.
+
+Certainty factors combine as $CF(conclusion)=\min(CF_{premises})\times CF_{rule}$ and, for two rules supporting the same conclusion, $CF_1+CF_2(1-CF_1)$.
+
+A \textbf{retrieval chatbot} matches user input to intents using patterns/keywords and returns a response.
+\subsection*{Algorithm}
+\begin{algo}[Procedure]\begin{enumerate}
+\item Load rules and the user's observed facts with certainty values.
+\item Find all rules whose premises are in working memory (match).
+\item Fire them, computing the conclusion CF; combine CFs for repeated conclusions; repeat until no change.
+\item Report conclusions sorted by CF and answer WHY/HOW questions from the firing trace.
+\end{enumerate}\end{algo}
+\subsection*{Program (Python 3)}
+{\small\color{slate}Notebook: \texttt{06\_Notebooks/Exp10\_ExpertSystem\_Chatbot.ipynb}\\ Script: \texttt{06\_Notebooks/python/Exp10\_ExpertSystem\_Chatbot.py}}
+\begin{lstlisting}[style=py]
+RULES = [
+ ("R1", ["yellow_leaves", "leaf_spots"],          "fungal_infection",   0.7),
+ ("R2", ["white_powder_on_leaves"],                "powdery_mildew",     0.9),
+ ("R3", ["fungal_infection", "humid_weather"],     "leaf_blight",        0.8),
+ ("R4", ["wilting", "dry_soil"],                   "water_stress",       0.85),
+ ("R5", ["wilting", "brown_stem_base"],            "root_rot",           0.75),
+ ("R6", ["holes_in_leaves", "larvae_seen"],        "pest_attack",        0.9),
+ ("R7", ["leaf_blight"],                           "advise_fungicide",   0.9),
+ ("R8", ["powdery_mildew"],                        "advise_sulphur_spray", 0.85),
+ ("R9", ["water_stress"],                          "advise_irrigation",  0.95),
+ ("R10",["pest_attack"],                           "advise_neem_oil",    0.8),
+ ("R11",["root_rot"],                              "advise_drainage",    0.8),
+ ("R12",["yellow_leaves", "stunted_growth"],       "nitrogen_deficiency",0.7),
+ ("R13",["nitrogen_deficiency"],                   "advise_urea_dose",   0.8),
+]
+def infer(observed):
+    wm = dict(observed); trace = []; changed = True
+    while changed:
+        changed = False
+        for rid, prem, concl, cf in RULES:
+            if all(p in wm for p in prem):
+                new = round(min(wm[p] for p in prem) * cf, 3)
+                old = wm.get(concl)
+                comb = new if old is None else round(old + new * (1 - old), 3)
+                if (rid, concl) not in [(t[0], t[2]) for t in trace]:
+                    wm[concl] = comb; trace.append((rid, prem, concl, comb)); changed = True
+    return wm, trace
+def explain(concl, trace):
+    for rid, prem, c, cf in trace:
+        if c == concl: return f"{concl} (CF {cf}) because {rid}: " + " AND ".join(prem)
+    return f"{concl} was observed directly."
+case = {"yellow_leaves": 1.0, "leaf_spots": 0.9, "humid_weather": 0.8, "holes_in_leaves": 0.6, "larvae_seen": 0.7}
+wm, trace = infer(case)
+print("Observed:", case, "\n\nInference trace:")
+for rid, prem, c, cf in trace: print(f"  {rid}: IF {' AND '.join(prem)} THEN {c}   -> CF = {cf}")
+print("\nAdvice (sorted by certainty):")
+for k, v in sorted(wm.items(), key=lambda x: -x[1]):
+    if k.startswith("advise"): print(f"  * {k.replace('advise_', '').replace('_', ' ').title():<16} CF = {v}")
+print("\nHOW was leaf_blight concluded?  ", explain("leaf_blight", trace))
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Observed: {'yellow_leaves': 1.0, 'leaf_spots': 0.9, 'humid_weather': 0.8, 'holes_in_leaves': 0.6, 'larvae
+
+Inference trace:
+  R1: IF yellow_leaves AND leaf_spots THEN fungal_infection   -> CF = 0.63
+  R3: IF fungal_infection AND humid_weather THEN leaf_blight   -> CF = 0.504
+  R6: IF holes_in_leaves AND larvae_seen THEN pest_attack   -> CF = 0.54
+  R7: IF leaf_blight THEN advise_fungicide   -> CF = 0.454
+  R10: IF pest_attack THEN advise_neem_oil   -> CF = 0.432
+
+Advice (sorted by certainty):
+  * Fungicide        CF = 0.454
+  * Neem Oil         CF = 0.432
+
+HOW was leaf_blight concluded?   leaf_blight (CF 0.504) because R3: fungal_infection AND humid_weather
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import networkx as nx
+G = nx.DiGraph()
+for rid, prem, c, cf in trace:
+    for p in prem: G.add_edge(p, c, label=rid)
+layers = {}
+def depth(n): return 0 if n in case else 1 + max(depth(p) for p in G.predecessors(n))
+for n in G.nodes: layers.setdefault(depth(n), []).append(n)
+pos = {n: (d * 3.0, -i * 1.2 + len(ns) * 0.6) for d, ns in layers.items() for i, n in enumerate(sorted(ns))}
+order = [rid for rid, *_ in trace]
+fig, ax = plt.subplots(figsize=(9, 4.8))
+def fr(k):
+    ax.clear(); fired = set(order[:k]); lit = set(case) | {c for rid, _, c, _ in trace if rid in fired}
+    nx.draw_networkx_edges(G, pos, ax=ax, edge_color=[GOLD if G[u][v]["label"] in fired else "#C8D0DC" for u, v in G.edges], width=2.2, arrowsize=14)
+    nx.draw_networkx_nodes(G, pos, ax=ax, node_color=[(LEAF if n.startswith("advise") else NAVY) if n in lit else MIST for n in G.nodes], node_size=2600, edgecolors=NAVY)
+    for group, fc in ((lit, "white"), (set(G.nodes) - lit, NAVY)):
+        nx.draw_networkx_labels(G, pos, ax=ax, labels={n: n.replace("_", "\n") for n in G.nodes if n in group}, font_size=7.5,
+                                font_family="serif", font_color=fc)
+    ax.set_title(f"Rule firing: {', '.join(order[:k]) or 'initial facts'}"); ax.axis("off"); ax.margins(0.12)
+gif = save_gif(animation.FuncAnimation(fig, fr, frames=len(order) + 3), "exp10_expert_system_firing.gif", fps=1)
+display(Image(filename=gif))
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+import re
+INTENTS = [
+ ("greet",    r"\b(hi|hello|hey|namaste)\b",                 "Hello! I am the Sanjivani AI&DS admission assistant. How can I help?"),
+ ("fees",     r"\b(fee|fees|cost|tuition)\b",                "Fee details for B.Tech AI & DS are on the university admissions portal; scholarships are available for eligible students."),
+ ("eligible", r"\b(eligib\w*|criteria|qualify|jee|mht.?cet)\b", "Eligibility: 10+2 with Physics & Mathematics and a valid MHT-CET / JEE Main score."),
+ ("courses",  r"\b(course|subject|syllabus|curriculum)\b",   "The curriculum covers AI, ML, Deep Learning, Data Engineering and an industry internship."),
+ ("hostel",   r"\b(hostel|accommodation|stay)\b",            "Separate hostels for boys and girls are available on campus."),
+ ("placement",r"\b(placement\w*|jobs?|package|recruit\w*)\b",     "The Training & Placement cell runs aptitude training and campus drives every year."),
+ ("contact",  r"\b(contact|phone|email|address)\b",          "Please visit the university website or the admissions office, Kopargaon."),
+ ("bye",      r"\b(bye|thanks|thank you)\b",                 "Thank you! All the best for your admission."),
+]
+def reply(msg):
+    m = msg.lower()
+    for name, pat, ans in INTENTS:
+        if re.search(pat, m): return name, ans
+    return "fallback", "Sorry, I did not understand. You can ask about fees, eligibility, courses, hostel or placements."
+for q in ["Hi there!", "What is the eligibility for AI and DS?", "How much are the fees?", "Is hostel available?",
+          "Tell me about placements", "Can I study astrophysics?", "Thanks, bye"]:
+    intent, ans = reply(q); print(f"User: {q}\nBot: [{intent}] {ans}\n")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+User: Hi there!
+Bot: [greet] Hello! I am the Sanjivani AI&DS admission assistant. How can I help?
+
+User: What is the eligibility for AI and DS?
+Bot: [eligible] Eligibility: 10+2 with Physics & Mathematics and a valid MHT-CET / JEE Main score.
+
+User: How much are the fees?
+Bot: [fees] Fee details for B.Tech AI & DS are on the university admissions portal; scholarships are avai
+
+User: Is hostel available?
+Bot: [hostel] Separate hostels for boys and girls are available on campus.
+
+User: Tell me about placements
+Bot: [placement] The Training & Placement cell runs aptitude training and campus drives every year.
+
+User: Can I study astrophysics?
+Bot: [fallback] Sorry, I did not understand. You can ask about fees, eligibility, courses, hostel or plac
+
+User: Thanks, bye
+Bot: [bye] Thank you! All the best for your admission.
+\end{lstlisting}
+\begin{lstlisting}[style=py]
+tests = [("hello", "greet"), ("fees structure?", "fees"), ("am I eligible with JEE", "eligible"), ("syllabus please", "courses"),
+         ("where do I stay", "hostel"), ("average package", "placement"), ("email id", "contact"), ("thank you", "bye"), ("weather today", "fallback")]
+acc = np.mean([reply(q)[0] == t for q, t in tests]); print(f"Intent accuracy on test prompts: {acc:.0%}")
+\end{lstlisting}
+\noindent{\small\bfseries\color{gold!70!black}Output}
+\begin{lstlisting}[style=out]
+Intent accuracy on test prompts: 100%
+\end{lstlisting}
+\subsection*{Output Figures and Animation}
+\begin{center}
+\animategraphics[controls,loop,autoplay,width=0.62\linewidth]{2}{frames/exp10_expert_system_firing/f-}{0}{5}\\
+{\small\color{slate}\textbf{Animation} (6 frames; plays in Adobe Acrobat Reader). GIF: \texttt{assets/animations/exp10\_expert\_system\_firing.gif}}
+\end{center}
+\subsection*{Result}
+\begin{outcome}[Result \& Conclusion]The expert system chained symptom rules to diagnoses and advice, combined certainty factors and explained its reasoning; the chatbot correctly mapped all test prompts to intents, falling back gracefully for unknown queries.\end{outcome}
+\subsection*{Viva-Voce Questions}
+\begin{enumerate}
+\item List the components of an expert system.
+\item How are certainty factors combined in MYCIN?
+\item What is conflict resolution in a production system?
+\item What is the role of the explanation facility?
+\item How would you improve the chatbot using machine learning?
+\end{enumerate}
+\end{document}
